@@ -5,6 +5,15 @@ type: software
 authors:
   - family-names: "Bresfelean"
     given-names: "Vasile Paul"
-    affiliation: "Faculty of Economics and Business Administration, Babeș-Bolyai University"
+    affiliation: "Faculty of Economics and Business Administration, Babeș-Bolyai University, Cluj-Napoca, Romania"
+    orcid: "https://orcid.org/0000-0002-7240-6187"
+  - family-names: "Vasile"
+    given-names: "Valentina"
+    affiliation: "Institute of National Economy, Romanian Academy, Bucharest, Romania"
+    orcid: "https://orcid.org/0000-0002-2368-1377"
+  - family-names: "Comes"
+    given-names: "Calin-Adrian"
+    affiliation: "\"George Emil Palade\" University of Medicine, Pharmacy, Sciences and Technology, Targu Mures, Romania; Institute of National Economy, Romanian Academy, Bucharest, Romania"
+    orcid: "https://orcid.org/0000-0003-2013-5589"
 version: 1.0.0
 repository-code: "https://github.com/calinadriancomes/eu27-material-climate-sensitivity"
