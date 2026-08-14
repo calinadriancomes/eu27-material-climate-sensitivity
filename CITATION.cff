@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this reproducibility package, please cite the archived release."
+title: "EU27 material-climate progress sensitivity reproducibility package"
+type: software
+authors:
+  - family-names: "Bresfelean"
+    given-names: "Vasile Paul"
+    affiliation: "Faculty of Economics and Business Administration, Babeș-Bolyai University"
+version: 1.0.0
+repository-code: "https://github.com/calinadriancomes/eu27-material-climate-sensitivity"

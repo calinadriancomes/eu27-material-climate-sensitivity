@@ -1,0 +1,26 @@
+internal_key,public_label,short_public_label,unit_label,definition,allowed_context,notes
+CMUR,Circular material use rate,CMUR,percent; percentage points/year,Circular material use rate; progress is the OLS slope in percentage points/year,all,Higher progress is favorable
+DMC,Domestic material consumption,DMC,tonnes per capita; favorable log-rate/year,Domestic material consumption per common average-population denominator,all,Decline is favorable in progress-score analyses
+RMC,Raw material consumption (material footprint),RMC,tonnes per capita; favorable log-rate/year,Raw material consumption per common average-population denominator,all,Official model-based environmental-account series; country production routes can differ and cross-country comparability requires qualification
+TERR,Territorial GHG,Territorial GHG,tonnes CO2e per capita; favorable log-rate/year,Territorial greenhouse-gas emissions excluding LULUCF and memo items,all,Decline is favorable
+CFOOT,Consumption-based GHG footprint,Consumption-based GHG footprint,tonnes CO2e per capita; favorable log-rate/year,Consumption-based greenhouse-gas footprint,all,Decline is favorable
+C_PROD,Production/residence GHG,Production/residence GHG,tonnes CO2e per capita,Production/residence-accounting greenhouse-gas emissions,Supplement only,Diagnostic bridge only
+D1,D1: CMUR → DMC,CMUR → DMC,difference in Spearman rho,Ordered change in concordance from CMUR to DMC while holding climate perspective fixed,Supplement; descriptive path,Path-dependent descriptive traversal step; not an independent effect
+D2,D2: DMC → RMC,DMC → RMC,difference in Spearman rho,Ordered change in concordance from DMC to RMC while holding climate perspective fixed,Supplement; descriptive path,Path-dependent descriptive traversal step; not an independent effect
+D3,D3: Territorial → consumption-based GHG,Territorial → consumption-based GHG,difference in Spearman rho,Ordered change in concordance from territorial to consumption-based GHG while holding material representation fixed,Supplement; descriptive path,Path-dependent descriptive traversal step; not an independent effect
+D_TOTAL,Selected endpoint cell difference,Selected endpoint difference,difference in Spearman rho,Difference between RMC × consumption-based GHG and CMUR × territorial GHG concordance,Supplement; secondary descriptive evidence,Fixed endpoint difference; not the full-grid range and not a general effect
+FULL_2010_2023,Full (2010–2023),2010–2023,,Primary analysis period,all,Primary
+EARLY_2010_2016,Early (2010–2016),2010–2016,,Secondary early-period window,Supplement; temporal figure,Secondary
+LATE_2017_2023,Late (2017–2023),2017–2023,,Secondary late-period window,Supplement; temporal figure,Secondary
+LOCO,Leave-one-country-out,LOCO,,Country deletion robustness,robustness,
+LOYO,Leave-one-year-out,LOYO,,Year deletion robustness,robustness,
+Theil_Sen,Theil–Sen,Theil–Sen,,Theil–Sen slope sensitivity,robustness,
+common_log_CMUR,Common-log CMUR sensitivity,Common-log CMUR,,CMUR analyzed on the common log-rate scale,robustness,Scale sensitivity
+published_pc,Published per-capita series,Published per-capita,,Published per-capita denominator sensitivity,robustness,
+total_scale,Total-scale sensitivity,Total scale,,Total rather than per-capita scale sensitivity,robustness,
+CMUR_even_year,Common even-year sensitivity,Common even-year,,All five progress series are re-estimated on the common set of seven even years from 2010 through 2022; the check is motivated by the odd-year construction of the disseminated CMUR series.,robustness,
+FULL_GRID_RANGE,Full-grid range,Grid range,difference in Spearman rho,Maximum minus minimum Spearman concordance across the six Full 3×2 cells,MAIN; Supplement,Primary system-level spread summary
+POINT_SIGN_DISAGREEMENT,Point-slope sign disagreement,Point-slope disagreement,count,The two compared point-estimated progress slopes have different signs,MAIN; Supplement; Data,Descriptive point-estimate object; does not assert the true slope sign is known without uncertainty
+LOYO_BOTH_SIGN_STABLE,Both signs stable across all leave-one-year-out omissions,LOYO both-sign stable,count / disagreement cases,"Among point-slope disagreement cases, both component slope signs remain unchanged under every one-year omission",MAIN; Supplement; Data,Stability diagnostic; not a significance classification
+BOOTSTRAP_DIAGNOSTIC_RANGE,Bootstrap diagnostic range,Bootstrap diagnostic range,quantity-specific,2.5th–97.5th percentiles under the specified joint residual-block bootstrap,Supplement; Data,Secondary diagnostic; not automatically a confidence interval
+RMC_MIXED_CHANGED_EXCLUSION,Additional RMC-provenance sensitivity excluding countries classified as mixed/changed in the RMC provenance registry,RMC provenance sensitivity,,Recomputes the full six-cell grid on the common n=20 after excluding exactly the seven mixed/changed registry cases,MAIN; Supplement,Provenance/composition sensitivity; not a production-method effect

@@ -1,0 +1,4 @@
+comparison,comparison_key,ols_disagreement_n,theil_sen_persistence_n,theil_sen_persistence_fraction
+CMUR → DMC,CMUR_to_DMC,13,13,1.0
+DMC → RMC,DMC_to_RMC,6,5,0.8333333333333334
+Territorial → consumption-based GHG,TERR_to_CFOOT,5,5,1.0

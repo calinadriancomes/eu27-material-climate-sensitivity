@@ -1,0 +1,7 @@
+point_sign_disagreement_CMUR_DMC,point_sign_disagreement_DMC_RMC,point_sign_disagreement_TERR_CFOOT,n_countries,countries
+False,False,False,8,"AT, BE, CY, EL, IT, NL, PL, PT"
+True,False,False,8,"DK, EE, ES, FI, FR, HR, LT, MT"
+False,True,False,4,"CZ, DE, LU, SK"
+True,False,True,3,"BG, HU, LV"
+False,False,True,2,"IE, RO"
+True,True,False,2,"SE, SI"

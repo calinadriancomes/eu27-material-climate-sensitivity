@@ -1,0 +1,28 @@
+scientific_geo,natural_earth_iso_a2,natural_earth_adm0_a3,natural_earth_admin,match_method,matched_geometry_n,duplicate_matches_n,status,expected_eu27_n,matched_eu27_n,missing_eu27_n,duplicate_country_matches_n,scientific_value_recomputed
+AT,AT,AUT,Austria,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+BE,BE,BEL,Belgium,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+BG,BG,BGR,Bulgaria,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+HR,HR,HRV,Croatia,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+CY,CY,CYP,Cyprus,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+CZ,CZ,CZE,Czechia,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+DK,DK,DNK,Denmark,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+EE,EE,EST,Estonia,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+FI,FI,FIN,Finland,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+FR,FR,FRA,France,ADM0_A3=FRA + ADMIN=France (avoids French dependency records),1,0,PASS,27,27,0,0,False
+DE,DE,DEU,Germany,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+EL,GR,GRC,Greece,Eurostat EL explicitly mapped to Natural Earth ISO_A2=GR,1,0,PASS,27,27,0,0,False
+HU,HU,HUN,Hungary,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+IE,IE,IRL,Ireland,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+IT,IT,ITA,Italy,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+LV,LV,LVA,Latvia,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+LT,LT,LTU,Lithuania,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+LU,LU,LUX,Luxembourg,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+MT,MT,MLT,Malta,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+NL,NL,NLD,Netherlands,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+PL,PL,POL,Poland,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+PT,PT,PRT,Portugal,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+RO,RO,ROU,Romania,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+SK,SK,SVK,Slovakia,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+SI,SI,SVN,Slovenia,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+ES,ES,ESP,Spain,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False
+SE,SE,SWE,Sweden,Natural Earth ISO_A2 exact match,1,0,PASS,27,27,0,0,False

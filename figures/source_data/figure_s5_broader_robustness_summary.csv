@@ -1,0 +1,9 @@
+diagnostic,estimand,min,max,sign_reversals
+full_reference,selected_endpoint_cell_difference,0.5958485958485958,0.5958485958485958,0
+LOCO,selected_endpoint_cell_difference,0.4697435897435896,0.7329914529914529,0
+LOYO,selected_endpoint_cell_difference,0.5341880341880343,0.6282051282051283,0
+published_pc,selected_endpoint_cell_difference,0.6031746031746031,0.6031746031746031,0
+common_log_CMUR,selected_endpoint_cell_difference,0.7960927960927962,0.7960927960927962,0
+Theil_Sen,selected_endpoint_cell_difference,0.7148962148962148,0.7148962148962148,0
+total_scale,selected_endpoint_cell_difference,0.4304029304029304,0.4304029304029304,0
+CMUR_even_year,selected_endpoint_cell_difference,0.5695970695970696,0.5695970695970696,0

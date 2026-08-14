@@ -1,0 +1,28 @@
+scientific_geo,natural_earth_iso_a2,natural_earth_adm0_a3,natural_earth_admin,match_method,matched_geometry_n,duplicate_matches_n,status
+AT,AT,AUT,Austria,Natural Earth ISO_A2 exact match,1,0,PASS
+BE,BE,BEL,Belgium,Natural Earth ISO_A2 exact match,1,0,PASS
+BG,BG,BGR,Bulgaria,Natural Earth ISO_A2 exact match,1,0,PASS
+HR,HR,HRV,Croatia,Natural Earth ISO_A2 exact match,1,0,PASS
+CY,CY,CYP,Cyprus,Natural Earth ISO_A2 exact match,1,0,PASS
+CZ,CZ,CZE,Czechia,Natural Earth ISO_A2 exact match,1,0,PASS
+DK,DK,DNK,Denmark,Natural Earth ISO_A2 exact match,1,0,PASS
+EE,EE,EST,Estonia,Natural Earth ISO_A2 exact match,1,0,PASS
+FI,FI,FIN,Finland,Natural Earth ISO_A2 exact match,1,0,PASS
+FR,FR,FRA,France,ADM0_A3=FRA + ADMIN=France (avoids French dependency records),1,0,PASS
+DE,DE,DEU,Germany,Natural Earth ISO_A2 exact match,1,0,PASS
+EL,GR,GRC,Greece,Eurostat EL explicitly mapped to Natural Earth ISO_A2=GR,1,0,PASS
+HU,HU,HUN,Hungary,Natural Earth ISO_A2 exact match,1,0,PASS
+IE,IE,IRL,Ireland,Natural Earth ISO_A2 exact match,1,0,PASS
+IT,IT,ITA,Italy,Natural Earth ISO_A2 exact match,1,0,PASS
+LV,LV,LVA,Latvia,Natural Earth ISO_A2 exact match,1,0,PASS
+LT,LT,LTU,Lithuania,Natural Earth ISO_A2 exact match,1,0,PASS
+LU,LU,LUX,Luxembourg,Natural Earth ISO_A2 exact match,1,0,PASS
+MT,MT,MLT,Malta,Natural Earth ISO_A2 exact match,1,0,PASS
+NL,NL,NLD,Netherlands,Natural Earth ISO_A2 exact match,1,0,PASS
+PL,PL,POL,Poland,Natural Earth ISO_A2 exact match,1,0,PASS
+PT,PT,PRT,Portugal,Natural Earth ISO_A2 exact match,1,0,PASS
+RO,RO,ROU,Romania,Natural Earth ISO_A2 exact match,1,0,PASS
+SK,SK,SVK,Slovakia,Natural Earth ISO_A2 exact match,1,0,PASS
+SI,SI,SVN,Slovenia,Natural Earth ISO_A2 exact match,1,0,PASS
+ES,ES,ESP,Spain,Natural Earth ISO_A2 exact match,1,0,PASS
+SE,SE,SWE,Sweden,Natural Earth ISO_A2 exact match,1,0,PASS

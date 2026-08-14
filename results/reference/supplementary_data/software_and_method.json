@@ -1,0 +1,29 @@
+{
+  "bootstrap_config": {
+    "B_per_block_length": 10000,
+    "T": 14,
+    "block_lengths": [
+      2,
+      3
+    ],
+    "interpretation": "secondary bootstrap diagnostic; reported ranges are bootstrap diagnostic ranges and frequencies are bootstrap frequencies",
+    "method": "joint circular moving-block residual bootstrap",
+    "rank_rule": "12-decimal numerical canonicalization then descending average ranks",
+    "resampling_unit": "whole 135-dimensional year-residual vector; identical sampled block indices for every country and representation",
+    "residual_model": "primary country-specific linear trend on favorable-oriented transformed series",
+    "seed_base": 20260812,
+    "series_vectors_per_year": 135,
+    "stream_seed_rule": "seed_base + block_length"
+  },
+  "environment_note": "Exact package versions are controlled by requirements-lock.txt; this canonical method record excludes runtime-specific platform metadata.",
+  "producer_script": "code/05_build_extended_publication_evidence.py",
+  "producer_script_sha256": "55104a49d0c557516eeaec644986d5c91eb9cc1569f93f3547418d507e7ba04e",
+  "source_panel_sha256": "eb0b40eb58e2ea1e260d54c8d41504f35f61298e52501ce6d7b61b0f3bb6b317",
+  "trend_interval_level": 0.95,
+  "trend_interval_methods": [
+    "conventional OLS",
+    "HC3",
+    "HAC lag 1",
+    "HAC lag 2"
+  ]
+}

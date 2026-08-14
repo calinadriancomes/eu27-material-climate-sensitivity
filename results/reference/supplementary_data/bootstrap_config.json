@@ -1,0 +1,16 @@
+{
+  "B_per_block_length": 10000,
+  "T": 14,
+  "block_lengths": [
+    2,
+    3
+  ],
+  "interpretation": "secondary bootstrap diagnostic; reported ranges are bootstrap diagnostic ranges and frequencies are bootstrap frequencies",
+  "method": "joint circular moving-block residual bootstrap",
+  "rank_rule": "12-decimal numerical canonicalization then descending average ranks",
+  "resampling_unit": "whole 135-dimensional year-residual vector; identical sampled block indices for every country and representation",
+  "residual_model": "primary country-specific linear trend on favorable-oriented transformed series",
+  "seed_base": 20260812,
+  "series_vectors_per_year": 135,
+  "stream_seed_rule": "seed_base + block_length"
+}

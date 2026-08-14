@@ -1,0 +1,25 @@
+block_length,extreme,cell_key,cell_label,count,bootstrap_replicates,frequency
+2,minimum,a_CMUR_TERR,CMUR × territorial,4457,10000,0.4457
+2,minimum,b_DMC_TERR,DMC × territorial,0,10000,0.0
+2,minimum,c_RMC_TERR,RMC × territorial,0,10000,0.0
+2,minimum,d_CMUR_CFOOT,CMUR × consumption,5543,10000,0.5543
+2,minimum,e_DMC_CFOOT,DMC × consumption,0,10000,0.0
+2,minimum,f_RMC_CFOOT,RMC × consumption,0,10000,0.0
+2,maximum,a_CMUR_TERR,CMUR × territorial,0,10000,0.0
+2,maximum,b_DMC_TERR,DMC × territorial,14,10000,0.0014
+2,maximum,c_RMC_TERR,RMC × territorial,9,10000,0.0009
+2,maximum,d_CMUR_CFOOT,CMUR × consumption,0,10000,0.0
+2,maximum,e_DMC_CFOOT,DMC × consumption,4,10000,0.0004
+2,maximum,f_RMC_CFOOT,RMC × consumption,9973,10000,0.9973
+3,minimum,a_CMUR_TERR,CMUR × territorial,4686,10000,0.4686
+3,minimum,b_DMC_TERR,DMC × territorial,0,10000,0.0
+3,minimum,c_RMC_TERR,RMC × territorial,0,10000,0.0
+3,minimum,d_CMUR_CFOOT,CMUR × consumption,5314,10000,0.5314
+3,minimum,e_DMC_CFOOT,DMC × consumption,0,10000,0.0
+3,minimum,f_RMC_CFOOT,RMC × consumption,0,10000,0.0
+3,maximum,a_CMUR_TERR,CMUR × territorial,0,10000,0.0
+3,maximum,b_DMC_TERR,DMC × territorial,33,10000,0.0033
+3,maximum,c_RMC_TERR,RMC × territorial,15,10000,0.0015
+3,maximum,d_CMUR_CFOOT,CMUR × consumption,0,10000,0.0
+3,maximum,e_DMC_CFOOT,DMC × consumption,5,10000,0.0005
+3,maximum,f_RMC_CFOOT,RMC × consumption,9947,10000,0.9947

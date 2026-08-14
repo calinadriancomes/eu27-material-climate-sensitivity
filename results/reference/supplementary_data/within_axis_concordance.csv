@@ -1,0 +1,5 @@
+axis,comparison,spearman,kendall_tau_b,tie_rule
+material,CMUR vs DMC,0.28266178266178266,0.17948717948717952,12-decimal numerical canonicalization followed by average ranks
+material,CMUR vs RMC,0.06837606837606838,0.07122507122507124,12-decimal numerical canonicalization followed by average ranks
+material,DMC vs RMC,0.7765567765567766,0.6182336182336183,12-decimal numerical canonicalization followed by average ranks
+climate,TERR vs CFOOT,0.8925518925518925,0.6980056980056981,12-decimal numerical canonicalization followed by average ranks

@@ -1,0 +1,32 @@
+record_type,period,path,step_number,public_label,value,path_sum,selected_endpoint_difference,interpretation
+monotone_path,FULL_2010_2023,climate_first,1,CMUR×TERR → CMUR×CFOOT,-0.0079365079365079,0.5958485958485958,0.5958485958485958,Path allocation is descriptive; all allowed paths share the same selected endpoint sum
+monotone_path,FULL_2010_2023,climate_first,2,CMUR×CFOOT → DMC×CFOOT,0.3876678876678877,0.5958485958485958,0.5958485958485958,Path allocation is descriptive; all allowed paths share the same selected endpoint sum
+monotone_path,FULL_2010_2023,climate_first,3,DMC×CFOOT → RMC×CFOOT,0.216117216117216,0.5958485958485958,0.5958485958485958,Path allocation is descriptive; all allowed paths share the same selected endpoint sum
+monotone_path,FULL_2010_2023,climate_between_material_steps,1,CMUR×TERR → DMC×TERR,0.3144078144078144,0.5958485958485958,0.5958485958485958,Path allocation is descriptive; all allowed paths share the same selected endpoint sum
+monotone_path,FULL_2010_2023,climate_between_material_steps,2,DMC×TERR → DMC×CFOOT,0.0653235653235653,0.5958485958485958,0.5958485958485958,Path allocation is descriptive; all allowed paths share the same selected endpoint sum
+monotone_path,FULL_2010_2023,climate_between_material_steps,3,DMC×CFOOT → RMC×CFOOT,0.216117216117216,0.5958485958485958,0.5958485958485958,Path allocation is descriptive; all allowed paths share the same selected endpoint sum
+monotone_path,FULL_2010_2023,climate_last,1,CMUR×TERR → DMC×TERR,0.3144078144078144,0.5958485958485958,0.5958485958485958,Path allocation is descriptive; all allowed paths share the same selected endpoint sum
+monotone_path,FULL_2010_2023,climate_last,2,DMC×TERR → RMC×TERR,0.1300366300366299,0.5958485958485958,0.5958485958485958,Path allocation is descriptive; all allowed paths share the same selected endpoint sum
+monotone_path,FULL_2010_2023,climate_last,3,RMC×TERR → RMC×CFOOT,0.1514041514041515,0.5958485958485958,0.5958485958485958,Path allocation is descriptive; all allowed paths share the same selected endpoint sum
+symmetric_temporal,EARLY_2010_2016,,0,maximum minus minimum across six cells,0.8999758037610097,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,EARLY_2010_2016,,0,DMC − CMUR | territorial,0.4659098696950756,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,EARLY_2010_2016,,0,DMC − CMUR | consumption,0.6856769423824207,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,EARLY_2010_2016,,0,RMC − DMC | territorial,0.1843711843711843,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,EARLY_2010_2016,,0,RMC − DMC | consumption,0.1855921855921856,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,EARLY_2010_2016,,0,RMC − CMUR | territorial,0.65028105406626,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,EARLY_2010_2016,,0,RMC − CMUR | consumption,0.8712691279746063,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,EARLY_2010_2016,,0,consumption − territorial | CMUR,0.0287066757864034,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,EARLY_2010_2016,,0,consumption − territorial | DMC,0.2484737484737484,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,EARLY_2010_2016,,0,consumption − territorial | RMC,0.2496947496947497,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,EARLY_2010_2016,,0,RMC × consumption minus CMUR × territorial,0.8999758037610097,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,LATE_2017_2023,,0,maximum minus minimum across six cells,0.5122100122100122,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,LATE_2017_2023,,0,DMC − CMUR | territorial,0.5061050061050061,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,LATE_2017_2023,,0,DMC − CMUR | consumption,0.3724053724053724,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,LATE_2017_2023,,0,RMC − DMC | territorial,-0.1794871794871795,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,LATE_2017_2023,,0,RMC − DMC | consumption,-0.0323565323565323,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,LATE_2017_2023,,0,RMC − CMUR | territorial,0.3266178266178265,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,LATE_2017_2023,,0,RMC − CMUR | consumption,0.34004884004884,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,LATE_2017_2023,,0,consumption − territorial | CMUR,-0.0061050061050061,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,LATE_2017_2023,,0,consumption − territorial | DMC,-0.1398046398046398,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,LATE_2017_2023,,0,consumption − territorial | RMC,0.0073260073260074,,,Descriptive temporal heterogeneity; no structural-break interpretation
+symmetric_temporal,LATE_2017_2023,,0,RMC × consumption minus CMUR × territorial,0.333943833943834,,,Descriptive temporal heterogeneity; no structural-break interpretation

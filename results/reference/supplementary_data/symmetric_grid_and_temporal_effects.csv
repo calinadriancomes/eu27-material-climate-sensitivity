@@ -1,0 +1,58 @@
+period,object_type,effect,value,formula,sign
+FULL_2010_2023,grid_cell,CMUR × territorial,0.09218559218559218,a_CMUR_TERR,POSITIVE
+FULL_2010_2023,grid_cell,DMC × territorial,0.4065934065934066,b_DMC_TERR,POSITIVE
+FULL_2010_2023,grid_cell,RMC × territorial,0.5366300366300365,c_RMC_TERR,POSITIVE
+FULL_2010_2023,grid_cell,CMUR × consumption,0.08424908424908426,d_CMUR_CFOOT,POSITIVE
+FULL_2010_2023,grid_cell,DMC × consumption,0.47191697191697196,e_DMC_CFOOT,POSITIVE
+FULL_2010_2023,grid_cell,RMC × consumption,0.688034188034188,f_RMC_CFOOT,POSITIVE
+FULL_2010_2023,full_grid_minimum,CMUR × consumption,0.08424908424908426,d_CMUR_CFOOT,POSITIVE
+FULL_2010_2023,full_grid_maximum,RMC × consumption,0.688034188034188,f_RMC_CFOOT,POSITIVE
+FULL_2010_2023,full_grid_range,maximum minus minimum across six cells,0.6037851037851037,f_RMC_CFOOT - d_CMUR_CFOOT,POSITIVE
+FULL_2010_2023,material_simple_difference,DMC − CMUR | territorial,0.3144078144078144,b-a,POSITIVE
+FULL_2010_2023,material_simple_difference,DMC − CMUR | consumption,0.38766788766788773,e-d,POSITIVE
+FULL_2010_2023,material_simple_difference,RMC − DMC | territorial,0.1300366300366299,c-b,POSITIVE
+FULL_2010_2023,material_simple_difference,RMC − DMC | consumption,0.21611721611721607,f-e,POSITIVE
+FULL_2010_2023,material_simple_difference,RMC − CMUR | territorial,0.4444444444444443,c-a,POSITIVE
+FULL_2010_2023,material_simple_difference,RMC − CMUR | consumption,0.6037851037851037,f-d,POSITIVE
+FULL_2010_2023,climate_simple_difference,consumption − territorial | CMUR,-0.007936507936507922,d-a,NEGATIVE
+FULL_2010_2023,climate_simple_difference,consumption − territorial | DMC,0.06532356532356537,e-b,POSITIVE
+FULL_2010_2023,climate_simple_difference,consumption − territorial | RMC,0.15140415140415153,f-c,POSITIVE
+FULL_2010_2023,selected_endpoint_cell_difference,RMC × consumption minus CMUR × territorial,0.5958485958485958,f-a,POSITIVE
+EARLY_2010_2016,grid_cell,CMUR × territorial,-0.21377311755832354,a_CMUR_TERR,NEGATIVE
+EARLY_2010_2016,grid_cell,DMC × territorial,0.25213675213675213,b_DMC_TERR,POSITIVE
+EARLY_2010_2016,grid_cell,RMC × territorial,0.43650793650793646,c_RMC_TERR,POSITIVE
+EARLY_2010_2016,grid_cell,CMUR × consumption,-0.1850664417719201,d_CMUR_CFOOT,NEGATIVE
+EARLY_2010_2016,grid_cell,DMC × consumption,0.5006105006105006,e_DMC_CFOOT,POSITIVE
+EARLY_2010_2016,grid_cell,RMC × consumption,0.6862026862026862,f_RMC_CFOOT,POSITIVE
+EARLY_2010_2016,full_grid_minimum,CMUR × territorial,-0.21377311755832354,a_CMUR_TERR,NEGATIVE
+EARLY_2010_2016,full_grid_maximum,RMC × consumption,0.6862026862026862,f_RMC_CFOOT,POSITIVE
+EARLY_2010_2016,full_grid_range,maximum minus minimum across six cells,0.8999758037610097,f_RMC_CFOOT - a_CMUR_TERR,POSITIVE
+EARLY_2010_2016,material_simple_difference,DMC − CMUR | territorial,0.46590986969507564,b-a,POSITIVE
+EARLY_2010_2016,material_simple_difference,DMC − CMUR | consumption,0.6856769423824207,e-d,POSITIVE
+EARLY_2010_2016,material_simple_difference,RMC − DMC | territorial,0.18437118437118433,c-b,POSITIVE
+EARLY_2010_2016,material_simple_difference,RMC − DMC | consumption,0.1855921855921856,f-e,POSITIVE
+EARLY_2010_2016,material_simple_difference,RMC − CMUR | territorial,0.65028105406626,c-a,POSITIVE
+EARLY_2010_2016,material_simple_difference,RMC − CMUR | consumption,0.8712691279746063,f-d,POSITIVE
+EARLY_2010_2016,climate_simple_difference,consumption − territorial | CMUR,0.02870667578640343,d-a,POSITIVE
+EARLY_2010_2016,climate_simple_difference,consumption − territorial | DMC,0.24847374847374848,e-b,POSITIVE
+EARLY_2010_2016,climate_simple_difference,consumption − territorial | RMC,0.24969474969474975,f-c,POSITIVE
+EARLY_2010_2016,selected_endpoint_cell_difference,RMC × consumption minus CMUR × territorial,0.8999758037610097,f-a,POSITIVE
+LATE_2017_2023,grid_cell,CMUR × territorial,0.09401709401709402,a_CMUR_TERR,POSITIVE
+LATE_2017_2023,grid_cell,DMC × territorial,0.6001221001221001,b_DMC_TERR,POSITIVE
+LATE_2017_2023,grid_cell,RMC × territorial,0.4206349206349206,c_RMC_TERR,POSITIVE
+LATE_2017_2023,grid_cell,CMUR × consumption,0.0879120879120879,d_CMUR_CFOOT,POSITIVE
+LATE_2017_2023,grid_cell,DMC × consumption,0.4603174603174603,e_DMC_CFOOT,POSITIVE
+LATE_2017_2023,grid_cell,RMC × consumption,0.427960927960928,f_RMC_CFOOT,POSITIVE
+LATE_2017_2023,full_grid_minimum,CMUR × consumption,0.0879120879120879,d_CMUR_CFOOT,POSITIVE
+LATE_2017_2023,full_grid_maximum,DMC × territorial,0.6001221001221001,b_DMC_TERR,POSITIVE
+LATE_2017_2023,full_grid_range,maximum minus minimum across six cells,0.5122100122100122,b_DMC_TERR - d_CMUR_CFOOT,POSITIVE
+LATE_2017_2023,material_simple_difference,DMC − CMUR | territorial,0.5061050061050061,b-a,POSITIVE
+LATE_2017_2023,material_simple_difference,DMC − CMUR | consumption,0.3724053724053724,e-d,POSITIVE
+LATE_2017_2023,material_simple_difference,RMC − DMC | territorial,-0.17948717948717952,c-b,NEGATIVE
+LATE_2017_2023,material_simple_difference,RMC − DMC | consumption,-0.0323565323565323,f-e,NEGATIVE
+LATE_2017_2023,material_simple_difference,RMC − CMUR | territorial,0.32661782661782657,c-a,POSITIVE
+LATE_2017_2023,material_simple_difference,RMC − CMUR | consumption,0.34004884004884006,f-d,POSITIVE
+LATE_2017_2023,climate_simple_difference,consumption − territorial | CMUR,-0.006105006105006111,d-a,NEGATIVE
+LATE_2017_2023,climate_simple_difference,consumption − territorial | DMC,-0.1398046398046398,e-b,NEGATIVE
+LATE_2017_2023,climate_simple_difference,consumption − territorial | RMC,0.007326007326007411,f-c,POSITIVE
+LATE_2017_2023,selected_endpoint_cell_difference,RMC × consumption minus CMUR × territorial,0.333943833943834,f-a,POSITIVE

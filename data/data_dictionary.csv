@@ -1,0 +1,13 @@
+variable,meaning,unit,analysis_role,source
+geo,country code,Eurostat geo code,key,All source series
+year,calendar year,2010-2023,key,All source series
+cmur_pct,circular material use rate,percent,higher favourable,env_ac_cur
+dmc_pc_common_t,domestic material consumption / common average population,tonnes per capita,lower favourable,env_ac_mfa + demo_gind
+rmc_pc_common_t,raw material consumption / common average population,tonnes per capita,lower favourable,env_ac_rme + demo_gind
+terr_ghg_pc_common_t,territorial GHG excluding LULUCF/memo items / common average population,tonnes CO2e per capita,lower favourable,sdg_13_10 + demo_gind
+cfoot_pc_common_t,consumption GHG footprint / common average population,tonnes CO2e per capita,lower favourable,cli_gge_foot + demo_gind
+cprod_pc_common_t,production/residence GHG / common average population,tonnes CO2e per capita,lower favourable; diagnostic only,cli_gge_foot + demo_gind
+dmc_pc_published_t,published DMC per capita,tonnes per capita,monitoring comparator,env_ac_mfa
+rmc_pc_published_t,published RMC per capita,tonnes per capita,monitoring comparator,env_ac_rme
+terr_ghg_pc_published_t,published territorial GHG per capita,tonnes CO2e per capita,monitoring comparator,sdg_13_10
+cfoot_pc_published_t,published consumption GHG footprint per capita,tonnes CO2e per capita,monitoring comparator,cli_gge_foot

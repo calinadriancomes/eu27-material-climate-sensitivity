@@ -1,0 +1,32 @@
+diagnostic_group,context,metric,value,note
+source_status,CMUR,BLANK,377.0,no observation-status flag
+source_status,CMUR,b,1.0,break in time series
+source_status,DMC,BLANK,356.0,no observation-status flag
+source_status,DMC,e,12.0,estimated
+source_status,DMC,i,10.0,value imputed by Eurostat or other receiving agencies
+source_status,RMC,BLANK,206.0,no observation-status flag
+source_status,RMC,i,172.0,value imputed by Eurostat or other receiving agencies
+source_status,territorial_GHG,BLANK,378.0,no observation-status flag
+source_status,consumption_GHG,BLANK,378.0,no observation-status flag
+source_status,population_denominator,BLANK,348.0,no observation-status flag
+source_status,population_denominator,b,15.0,break in time series
+source_status,population_denominator,be,2.0,break in time series; estimated
+source_status,population_denominator,e,12.0,estimated
+source_status,population_denominator,p,1.0,provisional
+published_vs_common,FULL_2010_2023|DMC,spearman_progress_common_vs_published,0.998168498168498,
+published_vs_common,FULL_2010_2023|RMC,spearman_progress_common_vs_published,1.0,
+published_vs_common,FULL_2010_2023|TERR,spearman_progress_common_vs_published,0.998168498168498,
+published_vs_common,FULL_2010_2023|CFOOT,spearman_progress_common_vs_published,0.998168498168498,
+published_vs_common,EARLY_2010_2016|DMC,spearman_progress_common_vs_published,1.0,
+published_vs_common,EARLY_2010_2016|RMC,spearman_progress_common_vs_published,1.0,
+published_vs_common,EARLY_2010_2016|TERR,spearman_progress_common_vs_published,0.9914529914529916,
+published_vs_common,EARLY_2010_2016|CFOOT,spearman_progress_common_vs_published,1.0,
+published_vs_common,LATE_2017_2023|DMC,spearman_progress_common_vs_published,0.9871794871794872,
+published_vs_common,LATE_2017_2023|RMC,spearman_progress_common_vs_published,1.0,
+published_vs_common,LATE_2017_2023|TERR,spearman_progress_common_vs_published,0.992063492063492,
+published_vs_common,LATE_2017_2023|CFOOT,spearman_progress_common_vs_published,0.9975579975579976,
+tie_audit,EARLY_2010_2016|primary_common_pc|OLS|pp|CMUR,n_tie_groups,3.0,12-decimal numerical canonicalization
+tie_audit,EARLY_2010_2016|primary_common_pc|THEIL_SEN|pp|CMUR,n_tie_groups,1.0,12-decimal numerical canonicalization
+tie_audit,EARLY_2010_2016|published_pc|OLS|pp|CMUR,n_tie_groups,3.0,12-decimal numerical canonicalization
+tie_audit,EARLY_2010_2016|total_scale|OLS|pp|CMUR,n_tie_groups,3.0,12-decimal numerical canonicalization
+tie_audit,LATE_2017_2023|primary_common_pc|THEIL_SEN|pp|CMUR,n_tie_groups,2.0,12-decimal numerical canonicalization

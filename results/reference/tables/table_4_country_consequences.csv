@@ -1,0 +1,4 @@
+comparison_key,comparison,mean_abs_rank_displacement,max_abs_rank_displacement,country_at_maximum,point_slope_sign_disagreements_n,both_sign_loyo_stable_n,disagreement_denominator_n,both_sign_loyo_stable_fraction
+CMUR_to_DMC,CMUR → DMC,7.62962962962963,21.0,MT,13,11,13,0.8461538461538461
+DMC_to_RMC,DMC → RMC,3.4074074074074074,15.0,LU,6,3,6,0.5
+TERR_to_CFOOT,Territorial → consumption-based GHG,3.185185185185185,6.0,IE,5,2,5,0.4

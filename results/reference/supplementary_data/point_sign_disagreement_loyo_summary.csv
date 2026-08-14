@@ -1,0 +1,4 @@
+comparison,comparison_key,point_slope_sign_disagreements_n,both_sign_loyo_stable_n,disagreement_denominator_n,both_sign_loyo_stable_fraction
+CMUR → DMC,CMUR_to_DMC,13,11,13,0.8461538461538461
+DMC → RMC,DMC_to_RMC,6,3,6,0.5
+Territorial → consumption-based GHG,TERR_to_CFOOT,5,2,5,0.4

@@ -1,0 +1,24 @@
+panel,object_type,public_label,value,metric,n_countries,interpretation_note
+A_full_grid,grid_cell,CMUR × territorial,0.0921855921855921,Spearman rho,27,Primary symmetric system-level evidence
+A_full_grid,grid_cell,DMC × territorial,0.4065934065934066,Spearman rho,27,Primary symmetric system-level evidence
+A_full_grid,grid_cell,RMC × territorial,0.5366300366300365,Spearman rho,27,Primary symmetric system-level evidence
+A_full_grid,grid_cell,CMUR × consumption,0.0842490842490842,Spearman rho,27,Primary symmetric system-level evidence
+A_full_grid,grid_cell,DMC × consumption,0.4719169719169719,Spearman rho,27,Primary symmetric system-level evidence
+A_full_grid,grid_cell,RMC × consumption,0.688034188034188,Spearman rho,27,Primary symmetric system-level evidence
+A_full_grid,full_grid_minimum,CMUR × consumption,0.0842490842490842,Spearman rho,27,Primary symmetric system-level evidence
+A_full_grid,full_grid_maximum,RMC × consumption,0.688034188034188,Spearman rho,27,Primary symmetric system-level evidence
+A_full_grid,full_grid_range,maximum minus minimum across six cells,0.6037851037851037,Difference in Spearman rho,27,Primary symmetric system-level evidence
+A_full_grid,material_simple_difference,DMC − CMUR | territorial,0.3144078144078144,Difference in Spearman rho,27,Descriptive conditional difference; not a causal effect
+A_full_grid,material_simple_difference,DMC − CMUR | consumption,0.3876678876678877,Difference in Spearman rho,27,Descriptive conditional difference; not a causal effect
+A_full_grid,material_simple_difference,RMC − DMC | territorial,0.1300366300366299,Difference in Spearman rho,27,Descriptive conditional difference; not a causal effect
+A_full_grid,material_simple_difference,RMC − DMC | consumption,0.216117216117216,Difference in Spearman rho,27,Descriptive conditional difference; not a causal effect
+A_full_grid,material_simple_difference,RMC − CMUR | territorial,0.4444444444444443,Difference in Spearman rho,27,Descriptive conditional difference; not a causal effect
+A_full_grid,material_simple_difference,RMC − CMUR | consumption,0.6037851037851037,Difference in Spearman rho,27,Descriptive conditional difference; not a causal effect
+A_full_grid,climate_simple_difference,consumption − territorial | CMUR,-0.0079365079365079,Difference in Spearman rho,27,Descriptive conditional difference; not a causal effect
+A_full_grid,climate_simple_difference,consumption − territorial | DMC,0.0653235653235653,Difference in Spearman rho,27,Descriptive conditional difference; not a causal effect
+A_full_grid,climate_simple_difference,consumption − territorial | RMC,0.1514041514041515,Difference in Spearman rho,27,Descriptive conditional difference; not a causal effect
+A_full_grid,selected_endpoint_cell_difference,RMC × consumption minus CMUR × territorial,0.5958485958485958,Difference in Spearman rho,27,Secondary descriptive difference between two selected grid cells
+B_within_axis,within_axis_concordance,CMUR vs DMC,0.2826617826617826,Spearman rho,27,Calibration of similarity between country progress orderings within an axis
+B_within_axis,within_axis_concordance,CMUR vs RMC,0.0683760683760683,Spearman rho,27,Calibration of similarity between country progress orderings within an axis
+B_within_axis,within_axis_concordance,DMC vs RMC,0.7765567765567766,Spearman rho,27,Calibration of similarity between country progress orderings within an axis
+B_within_axis,within_axis_concordance,TERR vs CFOOT,0.8925518925518925,Spearman rho,27,Calibration of similarity between country progress orderings within an axis
