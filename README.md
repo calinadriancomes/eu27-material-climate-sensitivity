@@ -103,4 +103,5 @@ Citation metadata are provided in `CITATION.cff`. The archived `v1.0.0` release 
 
 ## Repository structure
 
+The repository separates source data, analysis code, canonical reference outputs and publication-facing artifacts.
 See `docs/METHOD_AND_OUTPUT_MAP.md` for the relationship among source snapshots, analysis outputs, extended publication evidence, publication tables, figure source data, artwork and verification tests.
