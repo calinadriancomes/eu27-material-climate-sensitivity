@@ -136,7 +136,7 @@ def grid_record(g, **meta):
     return rec
 
 
-def full_grid_authority(panel, registry):
+def full_grid_robustness_outputs(panel, registry):
     fixed=[]
     fixed_specs=[
         ('baseline','primary_common_pc','OLS','pp',YEARS,'Full 2010–2023 baseline'),
@@ -486,7 +486,7 @@ def main():
         if not src.is_file(): raise RuntimeError(f'missing source-controlled provenance registry: {src}')
         pd.read_csv(src).to_csv(out/name,index=False)
     registry=pd.read_csv(ROOT/'data/provenance'/'rmc_country_method_registry.csv',keep_default_na=False)
-    fixed,deletion,n20,groups=full_grid_authority(panel,registry)
+    fixed,deletion,n20,groups=full_grid_robustness_outputs(panel,registry)
     fixed.to_csv(out/'full_grid_fixed_sensitivities.csv',index=False)
     deletion.to_csv(out/'full_grid_deletion_runs.csv',index=False)
     n20.to_csv(out/'rmc_provenance_sensitivity_n20.csv',index=False)
@@ -502,7 +502,7 @@ def main():
              'trend_interval_methods':['conventional OLS','HC3','HAC lag 1','HAC lag 2'],
              'trend_interval_level':0.95,
              'bootstrap_config':cfg,
-             'environment_note':'Exact package versions are controlled by requirements-lock.txt; this canonical method record excludes runtime-specific platform metadata.'}
+             'environment_note':'Exact package versions are controlled by requirements-lock.txt; this method record excludes runtime-specific platform metadata.'}
     (out/'software_and_method.json').write_text(json.dumps(lineage,indent=2,sort_keys=True)+'\n',encoding='utf-8')
     print(f'EXTENDED_PUBLICATION_EVIDENCE_PASS files={len(list(out.glob("*")))} bootstrap_B_per_block={args.bootstrap_b}')
 

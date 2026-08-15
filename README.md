@@ -4,7 +4,7 @@ This repository reproduces a longitudinal comparison of national material and gr
 
 ## Run in Google Colab
 
-The first notebook rebuilds and packages the analysis, including the adopted secondary publication diagnostics. The second uses that package to reproduce the publication tables and figures from the same Git commit.
+The first notebook rebuilds and packages the analysis, including the reported secondary publication diagnostics. The second uses that package to reproduce the publication tables and figures from the same Git commit.
 
 - Prepare and package the analysis: [![Open notebook 1 in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/calinadriancomes/eu27-material-climate-sensitivity/blob/main/notebooks/01_prepare_material_climate_analysis.ipynb)
 - Reproduce the final publication layer: [![Open notebook 2 in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/calinadriancomes/eu27-material-climate-sensitivity/blob/main/notebooks/02_reproduce_material_climate_results.ipynb)
@@ -43,7 +43,7 @@ python code/05_build_extended_publication_evidence.py
 python tests/test_extended_publication_evidence.py
 ```
 
-The reproduced analysis is written to `work/analysis/`. Baseline numerical outputs are checked against the frozen reference results; the extended-evidence test independently regenerates and checks the adopted secondary outputs.
+The reproduced analysis is written to `work/analysis/`. Baseline numerical outputs are checked against the frozen reference results; the extended-evidence test independently regenerates and checks the reported secondary outputs.
 
 ## Reproduce publication sources and figures
 

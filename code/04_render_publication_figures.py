@@ -49,7 +49,7 @@ matplotlib.rcParams.update({
     "pdf.fonttype":42,
     "ps.fonttype":42,
     "svg.fonttype":"none",
-    "svg.hashsalt":"eu27-material-climate-progress-publication",
+    "svg.hashsalt":"eu27-material-climate-sensitivity-publication",
 })
 
 FIGURE_FILES = {
@@ -112,7 +112,7 @@ def build_publication_sources(analysis: Path, output_root: Path) -> None:
     """Create publication source files from validated analysis and extended evidence outputs."""
     figsd=output_root/'figures'/'source_data'; tables=output_root/'results'/'reference'/'tables'; supp=output_root/'supplementary_tables'; suppdata=output_root/'supplementary_data'
     for d in [figsd,tables,supp,suppdata]: d.mkdir(parents=True,exist_ok=True)
-    # Supplement table numbering is canonical S1–S9 in this publication layer; remove stale prior-numbered CSVs from the target.
+    # Supplement table numbering is S1–S9 in this publication layer; remove stale prior-numbered CSVs from the target.
     for p in supp.glob('table_s*.csv'):
         p.unlink()
 
@@ -144,7 +144,7 @@ def build_publication_sources(analysis: Path, output_root: Path) -> None:
     rmc_groups=pd.read_csv(ext/'rmc_provenance_group_grids.csv')
     rmc_status=_read(analysis,'supplementary/rmc_status.csv')
 
-    # Copy all accepted machine-readable supplementary evidence into the publication layer.
+    # Copy machine-readable supplementary evidence into the publication layer.
     for p in sorted(ext.iterdir()):
         if p.is_file(): shutil.copy2(p,suppdata/p.name)
 
@@ -494,10 +494,10 @@ def _draw_map(ax, geoms, values, cmap, norm, extent):
 
 def _save(fig, output_root: Path, stem: str):
     d=output_root/"figures"/"reference"; d.mkdir(parents=True,exist_ok=True)
-    meta={"Creator":"eu27-material-climate-progress public renderer","CreationDate":None,"ModDate":None}
+    meta={"Creator":"eu27-material-climate-sensitivity public renderer","CreationDate":None,"ModDate":None}
     fig.savefig(d/f"{stem}.pdf",bbox_inches="tight",pad_inches=.03,metadata=meta)
-    fig.savefig(d/f"{stem}.png",dpi=300,bbox_inches="tight",pad_inches=.03,metadata={"Software":"eu27-material-climate-progress public renderer"})
-    fig.savefig(d/f"{stem}.svg",bbox_inches="tight",pad_inches=.03,metadata={"Date":None,"Creator":"eu27-material-climate-progress public renderer"})
+    fig.savefig(d/f"{stem}.png",dpi=300,bbox_inches="tight",pad_inches=.03,metadata={"Software":"eu27-material-climate-sensitivity public renderer"})
+    fig.savefig(d/f"{stem}.svg",bbox_inches="tight",pad_inches=.03,metadata={"Date":None,"Creator":"eu27-material-climate-sensitivity public renderer"})
     plt.close(fig)
 
 

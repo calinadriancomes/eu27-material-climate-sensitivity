@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 HERE=Path(__file__).resolve().parent; ROOT=HERE.parent; sys.path.insert(0,str(HERE))
 from checks import compare_analysis
 
-matplotlib.rcParams["svg.hashsalt"]="eu27-material-climate-progress"
+matplotlib.rcParams["svg.hashsalt"]="eu27-material-climate-sensitivity"
 
 def render(analysis, output):
     output=Path(output)
