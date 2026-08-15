@@ -2223,10 +2223,10 @@ L 494.112756 202.857367
    </g>
   </g>
   <g id="text_235">
-   <text style="font-size: 7px; font-family: 'DejaVu Sans'; text-anchor: middle" x="244.352126" y="365.197894" transform="rotate(-0 244.352126 365.197894)">Material progress rank</text>
+   <text style="font-size: 7px; font-family: 'DejaVu Sans'; text-anchor: middle" x="244.352126" y="365.197894" transform="rotate(-0 244.352126 365.197894)">Material progress rank (1 = most favorable)</text>
   </g>
   <g id="text_236">
-   <text style="font-size: 7px; font-family: 'DejaVu Sans'" transform="translate(7.478906 225.353097) rotate(-90)">Climate progress rank</text>
+   <text style="font-size: 7px; font-family: 'DejaVu Sans'" transform="translate(7.478906 262.961144) rotate(-90)">Climate progress rank (1 = most favorable)</text>
   </g>
  </g>
  <defs>

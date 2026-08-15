@@ -220,7 +220,8 @@ PUBLICATION_MAIN_TABLES = [
 ]
 PUBLICATION_SUPPLEMENT_TABLES = [f"table_s{i}_{name}.csv" for i,name in [
     (1,"sources_units_provenance"),(2,"temporal_concordance_matrices"),(3,"companion_correlations"),(4,"temporal_ordered_contrasts"),
-    (5,"extended_robustness"),(6,"production_account_bridge"),(7,"rmc_status_provenance"),(8,"numeric_scale_diagnostics")]]
+    (5,"extended_robustness"),(6,"temporal_bootstrap_diagnostics"),(7,"production_account_bridge"),(8,"rmc_provenance"),
+    (9,"source_denominator_tie_scale_diagnostics")]]
 PUBLICATION_FIGURE_STEMS = [
     "figure_1_primary_concordance_grid","figure_2_rank_concordance_geometry","figure_3_country_representation_consequences",
     "figure_4_geography_progress_ranks","figure_5_temporal_representation_sensitivity","figure_6_deletion_robustness",
@@ -251,10 +252,12 @@ PUBLICATION_SUPPLEMENTARY_DATA = [
     "bootstrap_rank_displacement_diagnostics.csv",
     "bootstrap_grid_extreme_identity_frequencies.csv",
     "bootstrap_full_grid_robustness.csv",
+    "bootstrap_paired_contrast_summary.csv",
     "full_grid_fixed_sensitivities.csv",
     "full_grid_deletion_runs.csv",
     "rmc_provenance_sensitivity_n20.csv",
     "rmc_provenance_group_grids.csv",
+    "population_flag_rank_displacement_summary.csv",
     "software_and_method.json",
 ]
 
@@ -416,7 +419,7 @@ def package_publication(repo_root, publication_dir, output_zip):
     receipt=repo_root/"work"/"analysis_receipt.json"
     if receipt.is_file():
         json.loads(receipt.read_text(encoding="utf-8")); shutil.copy2(receipt,stage/"run_receipt.json")
-    validation={"status":"PASS","reference_publication_files_compared":n,"publication_output_differences":0,"main_table_sources":4,"supplement_table_sources":8,"supplementary_machine_readable_evidence_files":len(PUBLICATION_SUPPLEMENTARY_DATA),"figure_source_data":13,"figure_artwork_files":39,"map_join_parity_files":1}
+    validation={"status":"PASS","reference_publication_files_compared":n,"publication_output_differences":0,"main_table_sources":4,"supplement_table_sources":9,"supplementary_machine_readable_evidence_files":len(PUBLICATION_SUPPLEMENTARY_DATA),"figure_source_data":13,"figure_artwork_files":39,"map_join_parity_files":1}
     (stage/"validation.json").write_text(json.dumps(validation,indent=2,sort_keys=True)+"\n",encoding="utf-8")
     (stage/"README.txt").write_text("Reproduced final publication layer: manuscript table sources, Supplement table sources, machine-readable supplementary evidence, figure source data, publication artwork, and map-join parity output. All required files were validated against the checked-in reference publication files before packaging. Publication CSV values use the declared 1e-12 numerical tolerance with exact schema/text semantics; PNG previews are pixel-identical; vector PDF/SVG files are checked structurally, with only insignificant SVG coordinate serialization tolerated.\n",encoding="utf-8")
     write_checksums(stage); deterministic_zip(stage,output_zip)

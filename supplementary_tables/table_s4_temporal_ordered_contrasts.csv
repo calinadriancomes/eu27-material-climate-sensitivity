@@ -8,6 +8,17 @@ monotone_path,FULL_2010_2023,climate_between_material_steps,3,DMC×CFOOT → RMC
 monotone_path,FULL_2010_2023,climate_last,1,CMUR×TERR → DMC×TERR,0.3144078144078144,0.5958485958485958,0.5958485958485958,Path allocation is descriptive; all allowed paths share the same selected endpoint sum
 monotone_path,FULL_2010_2023,climate_last,2,DMC×TERR → RMC×TERR,0.1300366300366299,0.5958485958485958,0.5958485958485958,Path allocation is descriptive; all allowed paths share the same selected endpoint sum
 monotone_path,FULL_2010_2023,climate_last,3,RMC×TERR → RMC×CFOOT,0.1514041514041515,0.5958485958485958,0.5958485958485958,Path allocation is descriptive; all allowed paths share the same selected endpoint sum
+symmetric_temporal,FULL_2010_2023,,0,maximum minus minimum across six cells,0.6037851037851037,,,Descriptive Full-period symmetric grid summary
+symmetric_temporal,FULL_2010_2023,,0,DMC − CMUR | territorial,0.3144078144078144,,,Descriptive Full-period symmetric grid summary
+symmetric_temporal,FULL_2010_2023,,0,DMC − CMUR | consumption,0.3876678876678877,,,Descriptive Full-period symmetric grid summary
+symmetric_temporal,FULL_2010_2023,,0,RMC − DMC | territorial,0.1300366300366299,,,Descriptive Full-period symmetric grid summary
+symmetric_temporal,FULL_2010_2023,,0,RMC − DMC | consumption,0.216117216117216,,,Descriptive Full-period symmetric grid summary
+symmetric_temporal,FULL_2010_2023,,0,RMC − CMUR | territorial,0.4444444444444443,,,Descriptive Full-period symmetric grid summary
+symmetric_temporal,FULL_2010_2023,,0,RMC − CMUR | consumption,0.6037851037851037,,,Descriptive Full-period symmetric grid summary
+symmetric_temporal,FULL_2010_2023,,0,consumption − territorial | CMUR,-0.0079365079365079,,,Descriptive Full-period symmetric grid summary
+symmetric_temporal,FULL_2010_2023,,0,consumption − territorial | DMC,0.0653235653235653,,,Descriptive Full-period symmetric grid summary
+symmetric_temporal,FULL_2010_2023,,0,consumption − territorial | RMC,0.1514041514041515,,,Descriptive Full-period symmetric grid summary
+symmetric_temporal,FULL_2010_2023,,0,RMC × consumption minus CMUR × territorial,0.5958485958485958,,,Descriptive Full-period symmetric grid summary
 symmetric_temporal,EARLY_2010_2016,,0,maximum minus minimum across six cells,0.8999758037610097,,,Descriptive temporal heterogeneity; no structural-break interpretation
 symmetric_temporal,EARLY_2010_2016,,0,DMC − CMUR | territorial,0.4659098696950756,,,Descriptive temporal heterogeneity; no structural-break interpretation
 symmetric_temporal,EARLY_2010_2016,,0,DMC − CMUR | consumption,0.6856769423824207,,,Descriptive temporal heterogeneity; no structural-break interpretation

@@ -68,7 +68,7 @@ python code/checks.py package-publication \
 The checked-in publication sources are under:
 
 - `results/reference/tables/` — manuscript Tables 2–5 sources;
-- `supplementary_tables/` — Tables S1–S8 sources;
+- `supplementary_tables/` — Tables S1–S9 sources;
 - `results/reference/supplementary_data/` — detailed machine-readable Supplement/Data evidence, including bootstrap summaries; publication-results ZIPs expose these files under `supplementary_data/`;
 - `figures/source_data/` — source data for Figures 1–6 and S1–S7;
 - `figures/reference/` — publication artwork in PDF/PNG/SVG formats.

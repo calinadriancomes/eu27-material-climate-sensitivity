@@ -13,8 +13,8 @@ FILES=[
     'rmc_country_method_registry.csv','rmc_official_evidence_register.csv','bootstrap_config.json','bootstrap_grid_summary.csv',
     'bootstrap_endpoint_summary.csv','bootstrap_country_rank_diagnostic_intervals.csv','bootstrap_slope_favorable_frequencies.csv',
     'bootstrap_sign_disagreement_frequencies.csv','bootstrap_rank_displacement_diagnostics.csv','bootstrap_grid_extreme_identity_frequencies.csv',
-    'bootstrap_full_grid_robustness.csv','full_grid_fixed_sensitivities.csv','full_grid_deletion_runs.csv',
-    'rmc_provenance_sensitivity_n20.csv','rmc_provenance_group_grids.csv','software_and_method.json']
+    'bootstrap_full_grid_robustness.csv','bootstrap_paired_contrast_summary.csv','full_grid_fixed_sensitivities.csv','full_grid_deletion_runs.csv',
+    'rmc_provenance_sensitivity_n20.csv','rmc_provenance_group_grids.csv','population_flag_rank_displacement_summary.csv','software_and_method.json']
 
 def compare_csv(a,b,tol=1e-12):
     x=pd.read_csv(a,keep_default_na=False); y=pd.read_csv(b,keep_default_na=False)
@@ -78,6 +78,60 @@ def main():
         assert len(deletion[deletion.deletion_type=='LOCO'])==27 and len(deletion[deletion.deletion_type=='LOYO'])==14
         bootfg=pd.read_csv(got/'bootstrap_full_grid_robustness.csv',keep_default_na=False)
         assert set(bootfg.block_length.astype(int))=={2,3}
+
+        fixed=pd.read_csv(got/'full_grid_fixed_sensitivities.csv',keep_default_na=False).set_index('diagnostic_key')
+        event=fixed.loc['exclude_2020_2021']
+        expected_event={'a_CMUR_TERR':0.115995115995116,'b_DMC_TERR':0.360805860805861,'c_RMC_TERR':0.528083028083028,
+                        'd_CMUR_CFOOT':0.094017094017094,'e_DMC_CFOOT':0.419413919413919,'f_RMC_CFOOT':0.647130647130647,
+                        'full_grid_range':0.553113553113553}
+        for c,v in expected_event.items(): assert abs(float(event[c])-v)<=1e-12,(c,event[c],v)
+        assert int(event.n_years)==12 and event.full_grid_minimum_cell_key=='d_CMUR_CFOOT' and event.full_grid_maximum_cell_key=='f_RMC_CFOOT'
+
+        paired=pd.read_csv(got/'bootstrap_paired_contrast_summary.csv',keep_default_na=False)
+        assert len(paired)==18 and set(paired.block_length.astype(int))=={2,3}
+        assert paired.groupby(['contrast_id','block_length']).size().eq(1).all()
+        expected_ids={'dmc_minus_cmur_territorial','dmc_minus_cmur_consumption','rmc_minus_dmc_territorial','rmc_minus_dmc_consumption',
+                      'rmc_minus_cmur_territorial','rmc_minus_cmur_consumption','consumption_minus_territorial_cmur',
+                      'consumption_minus_territorial_dmc','consumption_minus_territorial_rmc'}
+        assert set(paired.contrast_id)==expected_ids
+        base=fixed.loc['baseline']
+        formulas={
+          'dmc_minus_cmur_territorial':('b_DMC_TERR','a_CMUR_TERR'),'dmc_minus_cmur_consumption':('e_DMC_CFOOT','d_CMUR_CFOOT'),
+          'rmc_minus_dmc_territorial':('c_RMC_TERR','b_DMC_TERR'),'rmc_minus_dmc_consumption':('f_RMC_CFOOT','e_DMC_CFOOT'),
+          'rmc_minus_cmur_territorial':('c_RMC_TERR','a_CMUR_TERR'),'rmc_minus_cmur_consumption':('f_RMC_CFOOT','d_CMUR_CFOOT'),
+          'consumption_minus_territorial_cmur':('d_CMUR_CFOOT','a_CMUR_TERR'),'consumption_minus_territorial_dmc':('e_DMC_CFOOT','b_DMC_TERR'),
+          'consumption_minus_territorial_rmc':('f_RMC_CFOOT','c_RMC_TERR')}
+        for cid,(u,l) in formulas.items():
+            obs=float(base[u])-float(base[l])
+            assert np.allclose(paired.loc[paired.contrast_id.eq(cid),'observed_difference'].astype(float),obs,rtol=0,atol=1e-12)
+        cmurcl=paired[paired.contrast_id.eq('consumption_minus_territorial_cmur')]
+        assert (cmurcl.observed_difference.astype(float)<0).all() and cmurcl.frequency_with_observed_sign.astype(float).between(0,1).all()
+        # Paired medians are computed on within-draw differences, not by subtracting marginal medians.
+        gs=pd.read_csv(got/'bootstrap_grid_summary.csv')
+        for L in [2,3]:
+            q=gs[gs.block_length.eq(L)].set_index('quantity')
+            pm=float(paired[(paired.block_length.eq(L))&(paired.contrast_id.eq('dmc_minus_cmur_territorial'))].iloc[0].bootstrap_median)
+            assert abs(pm-(float(q.loc['b_DMC_TERR','median'])-float(q.loc['a_CMUR_TERR','median'])))>1e-6
+        for cid in ['dmc_minus_cmur_territorial','dmc_minus_cmur_consumption','rmc_minus_cmur_territorial','rmc_minus_cmur_consumption']:
+            assert (paired.loc[paired.contrast_id.eq(cid),'diagnostic_q025'].astype(float)>0).all()
+        q=paired[paired.contrast_id.eq('rmc_minus_dmc_territorial')]; assert (q.diagnostic_q025.astype(float)<0).all() and (q.diagnostic_q975.astype(float)>0).all()
+        q=paired[paired.contrast_id.eq('rmc_minus_dmc_consumption')]; assert (q.diagnostic_q025.astype(float)>0).all()
+        for cid in ['consumption_minus_territorial_cmur','consumption_minus_territorial_dmc']:
+            q=paired[paired.contrast_id.eq(cid)]; assert (q.diagnostic_q025.astype(float)<0).all() and (q.diagnostic_q975.astype(float)>0).all()
+        q=paired[paired.contrast_id.eq('consumption_minus_territorial_rmc')]; assert (q.diagnostic_q025.astype(float)>0).all()
+
+        pop=pd.read_csv(got/'population_flag_rank_displacement_summary.csv',keep_default_na=False)
+        assert len(pop)==6 and pop.groupby(['comparison_key','flag_group']).size().eq(1).all()
+        flagged='BE;CZ;DE;FR;HU;LU;LV;PL;PT;RO'
+        assert set(pop.loc[pop.flag_group.eq('at_least_one_population_flag'),'countries'])=={flagged}
+        exp={('CMUR_to_DMC','at_least_one_population_flag'):8.3,('CMUR_to_DMC','no_population_flag'):7.235294117647,
+             ('DMC_to_RMC','at_least_one_population_flag'):3.7,('DMC_to_RMC','no_population_flag'):3.235294117647,
+             ('TERR_to_CFOOT','at_least_one_population_flag'):2.5,('TERR_to_CFOOT','no_population_flag'):3.588235294118}
+        for k,v in exp.items():
+            r=pop[(pop.comparison_key.eq(k[0]))&(pop.flag_group.eq(k[1]))]
+            assert len(r)==1 and abs(float(r.iloc[0].mean_abs_rank_displacement)-v)<=1e-12
+        assert not pop.interpretation.astype(str).str.contains(r'no effect|do not matter|statistically unrelated',case=False,regex=True).any()
+
         status=pd.read_csv(got/'source_status_audit.csv')
         nonblank=status[status.status_code!='BLANK'].groupby('source')['count'].sum().to_dict()
         assert nonblank=={'CMUR':1,'DMC':22,'RMC':172,'population_denominator':30}

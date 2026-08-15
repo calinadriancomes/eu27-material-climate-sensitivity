@@ -37,6 +37,18 @@ GRID_LABELS={
     "c_RMC_TERR":"RMC × territorial", "d_CMUR_CFOOT":"CMUR × consumption",
     "e_DMC_CFOOT":"DMC × consumption", "f_RMC_CFOOT":"RMC × consumption",
 }
+EXCLUDE_2020_2021_YEARS=[y for y in YEARS if y not in (2020,2021)]
+CONTRAST_DEFS=[
+    ("dmc_minus_cmur_territorial","DMC − CMUR | territorial","b_DMC_TERR","a_CMUR_TERR"),
+    ("dmc_minus_cmur_consumption","DMC − CMUR | consumption","e_DMC_CFOOT","d_CMUR_CFOOT"),
+    ("rmc_minus_dmc_territorial","RMC − DMC | territorial","c_RMC_TERR","b_DMC_TERR"),
+    ("rmc_minus_dmc_consumption","RMC − DMC | consumption","f_RMC_CFOOT","e_DMC_CFOOT"),
+    ("rmc_minus_cmur_territorial","RMC − CMUR | territorial","c_RMC_TERR","a_CMUR_TERR"),
+    ("rmc_minus_cmur_consumption","RMC − CMUR | consumption","f_RMC_CFOOT","d_CMUR_CFOOT"),
+    ("consumption_minus_territorial_cmur","Consumption − territorial | CMUR","d_CMUR_CFOOT","a_CMUR_TERR"),
+    ("consumption_minus_territorial_dmc","Consumption − territorial | DMC","e_DMC_CFOOT","b_DMC_TERR"),
+    ("consumption_minus_territorial_rmc","Consumption − territorial | RMC","f_RMC_CFOOT","c_RMC_TERR"),
+]
 
 
 def sha256_file(path):
@@ -133,6 +145,7 @@ def full_grid_authority(panel, registry):
         ('Theil_Sen','primary_common_pc','THEIL_SEN','pp',YEARS,'Theil–Sen estimator'),
         ('total_scale','total_scale','OLS','pp',YEARS,'National-total scale convention'),
         ('common_even_year','primary_common_pc','OLS','pp',EVEN_YEARS,'Common even-year support'),
+        ('exclude_2020_2021','primary_common_pc','OLS','pp',EXCLUDE_2020_2021_YEARS,'Exclude 2020 and 2021'),
     ]
     for key,spec,est,mode,years,label in fixed_specs:
         pr=progress_table(panel,EU27,years,estimator=est,spec=spec,cmur_mode=mode)
@@ -337,6 +350,32 @@ def trend_intervals(panel):
     return d,pd.DataFrame(cnt)
 
 
+def population_flag_rank_displacement_summary(panel):
+    status=panel['population_status'].fillna('').astype(str).str.strip()
+    flagged=sorted(panel.loc[status.ne(''),'geo'].unique().tolist())
+    expected=['BE','CZ','DE','FR','HU','LU','LV','PL','PT','RO']
+    if flagged!=expected:
+        raise RuntimeError(f'population any-flag membership mismatch: {flagged} != {expected}')
+    base=consequences(progress_table(panel,EU27,YEARS))
+    defs=[
+        ('CMUR_to_DMC','CMUR → DMC','shift_CMUR_to_DMC'),
+        ('DMC_to_RMC','DMC → RMC','shift_DMC_to_RMC'),
+        ('TERR_to_CFOOT','Territorial → consumption-based GHG','shift_TERR_to_CFOOT'),
+    ]
+    interpretation=('A country-level any-flag diagnostic did not show a uniform pattern of larger mean absolute rank displacement '
+                    'among Member States carrying population-denominator status flags across all three comparison axes. '
+                    'This diagnostic is descriptive and does not identify an effect of status flags.')
+    rows=[]
+    fset=set(flagged)
+    for key,label,col in defs:
+        for group,isflag in [('at_least_one_population_flag',True),('no_population_flag',False)]:
+            q=base[base.geo.map(lambda g:(g in fset)==isflag)].copy()
+            rows.append({'comparison_key':key,'comparison_label':label,'flag_group':group,'n_countries':int(len(q)),
+                         'mean_abs_rank_displacement':float(q[col].abs().mean()),'countries':';'.join(sorted(q.geo.tolist())),
+                         'interpretation':interpretation})
+    return pd.DataFrame(rows)
+
+
 def status_label(code):
     labels={'b':'break in time series','d':'definition differs (see metadata)','e':'estimated','f':'forecast','i':'value imputed by Eurostat or other receiving agencies','m':'missing value, data cannot exist','n':'not significant','p':'provisional','u':'low reliability'}
     if not code: return 'no observation-status flag'
@@ -366,7 +405,8 @@ def joint_block_bootstrap(panel, B=10000, block_lengths=(2,3), seed=20260812, ch
         for rep,col in PRIMARY_COLS.items(): series.append(transform_series(g[col].to_numpy(float),rep)); labels.append((geo,rep))
     Y=np.column_stack(series); x=np.asarray(YEARS,float); xc=x-x.mean(); ss=float(np.dot(xc,xc)); beta=(xc[:,None]*Y).sum(axis=0)/ss
     intercept=Y.mean(axis=0)-beta*x.mean(); fitted=intercept[None,:]+x[:,None]*beta[None,:]; resid=Y-fitted; indices={(g,r):i for i,(g,r) in enumerate(labels)}
-    rank_rows=[]; fav_rows=[]; dis_rows=[]; grid_rows=[]; endpoint_rows=[]; disp_rows=[]; extreme_rows=[]
+    rank_rows=[]; fav_rows=[]; dis_rows=[]; grid_rows=[]; endpoint_rows=[]; disp_rows=[]; extreme_rows=[]; paired_rows=[]
+    observed=grid_record(grid(progress_table(panel,EU27,YEARS)))
     for L in block_lengths:
         rng=np.random.default_rng(seed+L); rank_collect={rep:[] for rep in REP_LABELS}; slope_sign_sum=np.zeros(len(labels),dtype=np.int64)
         dis_sum={key:np.zeros(27,dtype=np.int64) for key in ['CMUR_to_DMC','DMC_to_RMC','TERR_to_CFOOT']}; disp_collect={key:[] for key in dis_sum}; globals_=[]; done=0
@@ -398,6 +438,17 @@ def joint_block_bootstrap(panel, B=10000, block_lengths=(2,3), seed=20260812, ch
         for col in ['a_CMUR_TERR','b_DMC_TERR','c_RMC_TERR','d_CMUR_CFOOT','e_DMC_CFOOT','f_RMC_CFOOT','full_grid_range']:
             v=glob[col].to_numpy(); grid_rows.append({'block_length':L,'quantity':col,'median':np.median(v),'diagnostic_q025':np.quantile(v,.025),'diagnostic_q975':np.quantile(v,.975),'mean':np.mean(v),'sd':np.std(v,ddof=1)})
         v=glob.selected_endpoint_difference.to_numpy(); endpoint_rows.append({'block_length':L,'median':np.median(v),'diagnostic_q025':np.quantile(v,.025),'diagnostic_q975':np.quantile(v,.975),'mean':np.mean(v),'sd':np.std(v,ddof=1),'positive_bootstrap_frequency':np.mean(v>0)})
+        for contrast_id,contrast_label,upper_key,lower_key in CONTRAST_DEFS:
+            v=(glob[upper_key]-glob[lower_key]).to_numpy(float)
+            obs=float(observed[contrast_id])
+            if obs>0: freq=float(np.mean(v>0))
+            elif obs<0: freq=float(np.mean(v<0))
+            else: freq=np.nan
+            paired_rows.append({'contrast_id':contrast_id,'contrast_label':contrast_label,'block_length':int(L),
+                                'observed_difference':obs,'bootstrap_median':float(np.median(v)),
+                                'diagnostic_q025':float(np.quantile(v,.025)),'diagnostic_q975':float(np.quantile(v,.975)),
+                                'frequency_with_observed_sign':freq,'B':int(B),
+                                'interpretation':'Paired within-draw difference under the joint residual-block bootstrap; diagnostic ranges are not confidence intervals.'})
         for rep in REP_LABELS:
             R=np.vstack(rank_collect[rep])
             for j,geo in enumerate(EU27): rank_rows.append({'block_length':L,'representation':rep,'geo':geo,'rank_median':np.median(R[:,j]),'rank_diagnostic_q025':np.quantile(R[:,j],.025),'rank_diagnostic_q975':np.quantile(R[:,j],.975)})
@@ -411,7 +462,7 @@ def joint_block_bootstrap(panel, B=10000, block_lengths=(2,3), seed=20260812, ch
          'resampling_unit':'whole 135-dimensional year-residual vector; identical sampled block indices for every country and representation',
          'residual_model':'primary country-specific linear trend on favorable-oriented transformed series','rank_rule':'12-decimal numerical canonicalization then descending average ranks',
          'interpretation':'secondary bootstrap diagnostic; reported ranges are bootstrap diagnostic ranges and frequencies are bootstrap frequencies'}
-    return cfg,pd.DataFrame(grid_rows),pd.DataFrame(endpoint_rows),pd.DataFrame(rank_rows),pd.DataFrame(fav_rows),pd.DataFrame(dis_rows),pd.DataFrame(disp_rows),pd.DataFrame(extreme_rows)
+    return cfg,pd.DataFrame(grid_rows),pd.DataFrame(endpoint_rows),pd.DataFrame(rank_rows),pd.DataFrame(fav_rows),pd.DataFrame(dis_rows),pd.DataFrame(disp_rows),pd.DataFrame(extreme_rows),pd.DataFrame(paired_rows)
 
 
 def main():
@@ -428,6 +479,7 @@ def main():
     ts,cases_ts,sum_ts=theil_sen_signs(panel); ts.to_csv(out/'theil_sen_country_signs.csv',index=False); cases_ts.to_csv(out/'theil_sen_disagreement_cases.csv',index=False); sum_ts.to_csv(out/'theil_sen_disagreement_summary.csv',index=False)
     intervals,counts=trend_intervals(panel); intervals.to_csv(out/'trend_interval_diagnostics.csv',index=False); counts.to_csv(out/'trend_interval_counts.csv',index=False)
     source_status(panel).to_csv(out/'source_status_audit.csv',index=False)
+    population_flag_rank_displacement_summary(panel).to_csv(out/'population_flag_rank_displacement_summary.csv',index=False)
     # Static, source-controlled official-method registries are copied into the analysis output; no live web scraping is required.
     for name in ['rmc_country_method_registry.csv','rmc_official_evidence_register.csv']:
         src=ROOT/'data/provenance'/name
@@ -439,11 +491,12 @@ def main():
     deletion.to_csv(out/'full_grid_deletion_runs.csv',index=False)
     n20.to_csv(out/'rmc_provenance_sensitivity_n20.csv',index=False)
     groups.to_csv(out/'rmc_provenance_group_grids.csv',index=False)
-    cfg,gs,es,ri,sf,df,rd,extremes=joint_block_bootstrap(panel,B=args.bootstrap_b)
+    cfg,gs,es,ri,sf,df,rd,extremes,paired=joint_block_bootstrap(panel,B=args.bootstrap_b)
     (out/'bootstrap_config.json').write_text(json.dumps(cfg,indent=2,sort_keys=True)+'\n',encoding='utf-8')
     gs.to_csv(out/'bootstrap_grid_summary.csv',index=False); es.to_csv(out/'bootstrap_endpoint_summary.csv',index=False); ri.to_csv(out/'bootstrap_country_rank_diagnostic_intervals.csv',index=False)
     sf.to_csv(out/'bootstrap_slope_favorable_frequencies.csv',index=False); df.to_csv(out/'bootstrap_sign_disagreement_frequencies.csv',index=False); rd.to_csv(out/'bootstrap_rank_displacement_diagnostics.csv',index=False)
     extremes.to_csv(out/'bootstrap_grid_extreme_identity_frequencies.csv',index=False)
+    paired.to_csv(out/'bootstrap_paired_contrast_summary.csv',index=False)
     bootstrap_full_grid_summary(gs,extremes).to_csv(out/'bootstrap_full_grid_robustness.csv',index=False)
     lineage={'source_panel_sha256':PANEL_SHA256,'producer_script':'code/05_build_extended_publication_evidence.py','producer_script_sha256':sha256_file(Path(__file__)),
              'trend_interval_methods':['conventional OLS','HC3','HAC lag 1','HAC lag 2'],

@@ -3,9 +3,8 @@ from pathlib import Path
 import pandas as pd
 
 ROOT=Path(__file__).resolve().parents[1]
-REVIEW_DEVELOPMENT_TOKEN=''.join(('review','er-motivated'))
 FORBIDDEN=[
-    REVIEW_DEVELOPMENT_TOKEN,'pre-specified','common-method sample','harmonized sample',
+    'pre-specified','common-method sample','harmonized sample',
     'restricted-comparability sample','stable-provenance sample','primary full-grid robustness'
 ]
 

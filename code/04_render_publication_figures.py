@@ -112,6 +112,9 @@ def build_publication_sources(analysis: Path, output_root: Path) -> None:
     """Create publication source files from validated analysis and extended evidence outputs."""
     figsd=output_root/'figures'/'source_data'; tables=output_root/'results'/'reference'/'tables'; supp=output_root/'supplementary_tables'; suppdata=output_root/'supplementary_data'
     for d in [figsd,tables,supp,suppdata]: d.mkdir(parents=True,exist_ok=True)
+    # Supplement table numbering is canonical S1–S9 in this publication layer; remove stale prior-numbered CSVs from the target.
+    for p in supp.glob('table_s*.csv'):
+        p.unlink()
 
     main=_read(analysis,'tables/main_results.csv')
     country=_primary_country(analysis)
@@ -133,6 +136,10 @@ def build_publication_sources(analysis: Path, output_root: Path) -> None:
     full_grid_fixed=pd.read_csv(ext/'full_grid_fixed_sensitivities.csv')
     full_grid_deletion=pd.read_csv(ext/'full_grid_deletion_runs.csv')
     bootstrap_full_grid=pd.read_csv(ext/'bootstrap_full_grid_robustness.csv')
+    bootstrap_grid_summary=pd.read_csv(ext/'bootstrap_grid_summary.csv')
+    bootstrap_endpoint_summary=pd.read_csv(ext/'bootstrap_endpoint_summary.csv')
+    bootstrap_paired=pd.read_csv(ext/'bootstrap_paired_contrast_summary.csv')
+    population_flag_summary=pd.read_csv(ext/'population_flag_rank_displacement_summary.csv')
     rmc_n20=pd.read_csv(ext/'rmc_provenance_sensitivity_n20.csv')
     rmc_groups=pd.read_csv(ext/'rmc_provenance_group_grids.csv')
     rmc_status=_read(analysis,'supplementary/rmc_status.csv')
@@ -175,19 +182,20 @@ def build_publication_sources(analysis: Path, output_root: Path) -> None:
     # MAIN Table 5: robustness/sensitivity of the primary six-cell grid.
     panel_heading='Panel A — Grid-level robustness and sensitivity'
     t5=[]
-    fixed_labels={
-        'baseline':('full_reference','Full 2010–2023 baseline'),
-        'common_log_CMUR':('scale_or_estimand_convention','Common-log CMUR'),
-        'Theil_Sen':('estimator_sensitivity','Theil–Sen'),
-        'total_scale':('scale_or_estimand_convention','Total scale'),
-        'common_even_year':('temporal_support_convention','Common even-year'),
+    fixed_metadata={
+        'baseline':('full_reference','Full 2010–2023 baseline','n = 27','Point summary of the six-cell grid; the range is a descriptive spread across the six cells.'),
+        'common_log_CMUR':('scale_or_estimand_convention','Common-log CMUR','n = 27','Point summary of the six-cell grid; the range is a descriptive spread across the six cells.'),
+        'Theil_Sen':('estimator_sensitivity','Theil–Sen','n = 27','Point summary of the six-cell grid; the range is a descriptive spread across the six cells.'),
+        'total_scale':('scale_or_estimand_convention','Total scale','n = 27','Point summary of the six-cell grid; the range is a descriptive spread across the six cells.'),
+        'common_even_year':('temporal_support_convention','Common even-year','n = 27','Point summary of the six-cell grid; the range is a descriptive spread across the six cells.'),
+        'exclude_2020_2021':('event_defined_temporal_sensitivity','Exclude 2020 and 2021','n = 27; 12 retained calendar years','All five trajectories re-estimated after excluding calendar years 2020 and 2021.'),
     }
-    for key,(klass,label) in fixed_labels.items():
+    for key,(klass,label,scope,interpretation) in fixed_metadata.items():
         q=full_grid_fixed[full_grid_fixed.diagnostic_key.eq(key)]
         if len(q)!=1: raise RuntimeError(f'Missing full-grid fixed sensitivity: {key}')
         rr=q.iloc[0]
-        t5.append(['A_grid_level',panel_heading,klass,key,label,f'n = {int(rr.n_countries)}','Full-grid range','Difference in Spearman rho',float(rr.full_grid_range),float(rr.full_grid_range),float(rr.full_grid_range),
-                   rr.full_grid_minimum_cell_label,rr.full_grid_maximum_cell_label,'Point summary of the six-cell grid; the range is a descriptive spread across the six cells.'])
+        t5.append(['A_grid_level',panel_heading,klass,key,label,scope,'Full-grid range','Difference in Spearman rho',float(rr.full_grid_range),float(rr.full_grid_range),float(rr.full_grid_range),
+                   rr.full_grid_minimum_cell_label,rr.full_grid_maximum_cell_label,interpretation])
     for dtype,label in [('LOCO','Leave-one-country-out'),('LOYO','Leave-one-year-out')]:
         q=full_grid_deletion[full_grid_deletion.deletion_type.eq(dtype)]
         if q.empty: raise RuntimeError(f'Missing {dtype} full-grid deletion runs')
@@ -234,48 +242,126 @@ def build_publication_sources(analysis: Path, output_root: Path) -> None:
                 comp.append([period,mat,clim,cr,float(rr[key]),float(sr[key]),27])
     pd.DataFrame(comp,columns=['period','material_representation','climate_perspective','correlation','correlation_value','spearman_reference','n_countries']).to_csv(supp/'table_s3_companion_correlations.csv',index=False)
 
-    # S4: all monotone paths plus symmetric Early/Late effects; path allocation is explicitly descriptive.
+    # S4: 9 monotone-path rows plus 11 symmetric rows for each of Full, Early and Late.
     s4=[]
     for _,rr in paths.iterrows():
         s4.append(['monotone_path','FULL_2010_2023',rr.path,int(rr.step_number),rr.step_sequence,float(rr.step_value),float(rr.path_sum),float(rr.selected_endpoint_difference),'Path allocation is descriptive; all allowed paths share the same selected endpoint sum'])
-    for period in ['EARLY_2010_2016','LATE_2017_2023']:
-        q=sym[(sym.period==period)&sym.object_type.isin(['full_grid_range','material_simple_difference','climate_simple_difference','selected_endpoint_cell_difference'])]
-        for _,rr in q.iterrows(): s4.append(['symmetric_temporal',period,'',0,rr.effect,float(rr.value),np.nan,np.nan,'Descriptive temporal heterogeneity; no structural-break interpretation'])
-    pd.DataFrame(s4,columns=['record_type','period','path','step_number','public_label','value','path_sum','selected_endpoint_difference','interpretation']).to_csv(supp/'table_s4_temporal_ordered_contrasts.csv',index=False)
+    symmetric_types=['full_grid_range','material_simple_difference','climate_simple_difference','selected_endpoint_cell_difference']
+    for period in ['FULL_2010_2023','EARLY_2010_2016','LATE_2017_2023']:
+        q=sym[(sym.period==period)&sym.object_type.isin(symmetric_types)]
+        if len(q)!=11: raise RuntimeError(f'Expected 11 symmetric S4 rows for {period}, found {len(q)}')
+        for _,rr in q.iterrows():
+            interp='Descriptive Full-period symmetric grid summary' if period=='FULL_2010_2023' else 'Descriptive temporal heterogeneity; no structural-break interpretation'
+            s4.append(['symmetric_temporal',period,'',0,rr.effect,float(rr.value),np.nan,np.nan,interp])
+    s4df=pd.DataFrame(s4,columns=['record_type','period','path','step_number','public_label','value','path_sum','selected_endpoint_difference','interpretation'])
+    if len(s4df)!=42: raise RuntimeError(f'Table S4 row-count mismatch: {len(s4df)} != 42')
+    s4df.to_csv(supp/'table_s4_temporal_ordered_contrasts.csv',index=False)
 
-    # S5: two bindable panels within the existing S1-S8 Supplement architecture.
-    # Panel A retains selected-endpoint convention/deletion evidence as secondary descriptive output.
-    # Panel B binds the compact OLS/HC3/HAC trend-interval count summary; country-level intervals remain DATA_ONLY.
-    s5=[]; full_rg=rg[(rg.period=='FULL_2010_2023')&(rg.correlation=='spearman')]
-    for _,rr in full_rg.iterrows():
-        key=f"{rr.spec}|{rr.estimator}|{rr.cmur_mode}"
-        klass='estimator_sensitivity' if rr.estimator=='THEIL_SEN' else ('denominator_convention' if rr.spec=='published_pc' else ('scale_or_estimand_convention' if rr.spec=='total_scale' or rr.cmur_mode=='log' else 'full_reference'))
-        s5.append(['A_selected_endpoint_sensitivity',klass,key,'','','selected_endpoint_cell_difference',float(rr.D_TOTAL_f_minus_a),float(rr.D_TOTAL_f_minus_a),0,np.nan,np.nan,'Selected endpoint is secondary descriptive evidence'])
-    for _,rr in robustness[robustness.estimand=='D_TOTAL_f_minus_a'].iterrows():
-        if rr.diagnostic in ('LOCO','LOYO'):
-            s5.append(['A_selected_endpoint_sensitivity','deletion_robustness',rr.diagnostic,'','','selected_endpoint_cell_difference',float(rr['min']),float(rr['max']),int(rr.sign_reversals),np.nan,np.nan,'Deletion perturbation; endpoint estimand unchanged'])
+    # S5: Panel A mirrors MAIN Table 5, Panel B keeps 10 selected-endpoint diagnostics, Panel C has 20 interval rows.
+    s5_cols=['panel','panel_heading','evidence_class','diagnostic_key','public_label','scope_or_n','analytical_object','metric','reference_or_point','lower_value','upper_value','minimum_cell_context','maximum_cell_context','representation','method','interval_excludes_zero_n','total_countries','interpretation']
+    s5=[]
+    for row in t5:
+        panel,phead,klass,key,label,scope,obj,metric,point,low,high,minctx,maxctx,interp=row
+        s5.append([panel,phead,klass,key,label,scope,obj,metric,point,low,high,minctx,maxctx,'','',np.nan,np.nan,interp])
+
+    full_rg=rg[(rg.period=='FULL_2010_2023')&(rg.correlation=='spearman')]
+    endpoint_rows=[]
+    endpoint_order=[
+        ('primary_common_pc','OLS','pp','full_reference','Full 2010–2023 reference','n = 27','Full-period selected endpoint; secondary descriptive evidence'),
+        ('published_pc','OLS','pp','published_pc','Published per-capita series','n = 27','Alternative denominator convention'),
+        ('primary_common_pc','OLS','log','common_log_CMUR','Common-log CMUR sensitivity','n = 27','Alternative CMUR progress-scale convention'),
+        ('primary_common_pc','THEIL_SEN','pp','Theil_Sen','Theil–Sen','n = 27','Alternative country-trend estimator'),
+        ('total_scale','OLS','pp','total_scale','Total-scale sensitivity','n = 27','Alternative scale/estimand convention'),
+    ]
+    for spec,est,mode,key,label,scope,interp in endpoint_order:
+        q=full_rg[(full_rg.spec==spec)&(full_rg.estimator==est)&(full_rg.cmur_mode==mode)]
+        if len(q)!=1: raise RuntimeError(f'Missing endpoint fixed diagnostic {key}')
+        val=float(q.iloc[0].D_TOTAL_f_minus_a)
+        endpoint_rows.append(['B_selected_endpoint','Panel B — Selected-endpoint sensitivity (secondary descriptive evidence)','secondary_endpoint',key,label,scope,'Selected endpoint cell difference','Difference in Spearman rho',val,val,val,'','','','',np.nan,np.nan,interp])
+    for dtype,label in [('LOCO','Leave-one-country-out'),('LOYO','Leave-one-year-out')]:
+        q=robustness[(robustness.estimand=='D_TOTAL_f_minus_a')&(robustness.diagnostic==dtype)]
+        if len(q)!=1: raise RuntimeError(f'Missing selected-endpoint {dtype} summary')
+        rr=q.iloc[0]
+        scope='27 runs; n = 26 each' if dtype=='LOCO' else '14 runs; n = 27 each'
+        endpoint_rows.append(['B_selected_endpoint','Panel B — Selected-endpoint sensitivity (secondary descriptive evidence)','secondary_endpoint_deletion',dtype,label,scope,'Selected endpoint cell difference','Difference in Spearman rho',np.nan,float(rr['min']),float(rr['max']),'','','','',np.nan,np.nan,'Deletion perturbation; selected endpoint definition unchanged'])
     ce=cmur_even.iloc[0]
-    s5.append(['A_selected_endpoint_sensitivity','temporal_support_convention','CMUR_even_year','','','selected_endpoint_cell_difference',float(ce.D_TOTAL_f_minus_a),float(ce.D_TOTAL_f_minus_a),0,np.nan,np.nan,'Common even-year temporal-support convention'])
+    endpoint_rows.append(['B_selected_endpoint','Panel B — Selected-endpoint sensitivity (secondary descriptive evidence)','secondary_endpoint_temporal_support','CMUR_even_year','Common even-year sensitivity','n = 27; 7 retained calendar years','Selected endpoint cell difference','Difference in Spearman rho',float(ce.D_TOTAL_f_minus_a),float(ce.D_TOTAL_f_minus_a),float(ce.D_TOTAL_f_minus_a),'','','','',np.nan,np.nan,'Common even-year temporal-support convention'])
+    for _,rr in bootstrap_endpoint_summary.sort_values('block_length').iterrows():
+        L=int(rr.block_length)
+        endpoint_rows.append(['B_selected_endpoint','Panel B — Selected-endpoint sensitivity (secondary descriptive evidence)','secondary_endpoint_bootstrap',f'bootstrap_block_{L}',f'Joint residual-block bootstrap, block {L}','n = 27; B = 10,000','Selected endpoint cell difference','Difference in Spearman rho',float(rr['median']),float(rr.diagnostic_q025),float(rr.diagnostic_q975),'','','','',np.nan,np.nan,'Model-dependent joint residual-block bootstrap diagnostic; selected endpoint remains secondary'])
+    if len(endpoint_rows)!=10: raise RuntimeError(f'Table S5 Panel B row-count mismatch: {len(endpoint_rows)} != 10')
+    s5.extend(endpoint_rows)
     for _,rr in trend_interval_counts.iterrows():
-        s5.append(['B_trend_interval_summary','trend_interval_summary',f"{rr.representation}|{rr.method}",rr.representation,rr.method,'trend_interval_excludes_zero_count',np.nan,np.nan,np.nan,int(rr.interval_excludes_zero_n),int(rr.total_countries),'Compact interval summary only; not a significant/non-significant country classification'])
-    pd.DataFrame(s5,columns=['panel','evidence_class','specification','representation','method','estimand','min_value','max_value','sign_reversals','interval_excludes_zero_n','total_countries','interpretation']).drop_duplicates().to_csv(supp/'table_s5_extended_robustness.csv',index=False)
+        s5.append(['C_trend_intervals','Panel C — Country trend-interval summary','trend_interval_summary',f"{rr.representation}|{rr.method}",f"{rr.representation} — {rr.method}",'n = 27','Country trend interval excludes-zero count','Countries (of 27)',np.nan,np.nan,np.nan,'','',rr.representation,rr.method,int(rr.interval_excludes_zero_n),int(rr.total_countries),'Compact interval summary only; not a significant/non-significant country classification'])
+    s5df=pd.DataFrame(s5,columns=s5_cols)
+    if len(s5df)!=41 or (s5df.panel=='A_grid_level').sum()!=11 or (s5df.panel=='B_selected_endpoint').sum()!=10 or (s5df.panel=='C_trend_intervals').sum()!=20:
+        raise RuntimeError('Table S5 row-count/panel mismatch')
+    s5df.to_csv(supp/'table_s5_extended_robustness.csv',index=False)
 
-    _read(analysis,'supplementary/accounting_bridge.csv').to_csv(supp/'table_s6_production_account_bridge.csv',index=False)
+    # S6: reader-facing cellwise and paired within-draw temporal-bootstrap diagnostics.
+    scope_note=('These diagnostics perturb the temporal residual structure conditional on the disseminated series and fitted trend specification; '
+                'they do not propagate uncertainty from the upstream statistical-production models used to construct model-assisted footprint series.')
+    baseline_fixed=full_grid_fixed[full_grid_fixed.diagnostic_key.eq('baseline')]
+    if len(baseline_fixed)!=1: raise RuntimeError('Missing baseline fixed grid for Table S6')
+    br=baseline_fixed.iloc[0]
+    grid_labels={'a_CMUR_TERR':'CMUR × territorial','b_DMC_TERR':'DMC × territorial','c_RMC_TERR':'RMC × territorial','d_CMUR_CFOOT':'CMUR × consumption','e_DMC_CFOOT':'DMC × consumption','f_RMC_CFOOT':'RMC × consumption'}
+    s6=[]
+    for L in [2,3]:
+        q=bootstrap_grid_summary[bootstrap_grid_summary.block_length.eq(L)].set_index('quantity')
+        for key in grid_labels:
+            rr=q.loc[key]
+            s6.append(['A_cellwise',key,grid_labels[key],L,float(br[key]),float(rr['median']),float(rr.diagnostic_q025),float(rr.diagnostic_q975),np.nan,'Spearman rho',scope_note])
+    for _,rr in bootstrap_paired.sort_values(['block_length','contrast_id']).iterrows():
+        s6.append(['B_paired_contrasts',rr.contrast_id,rr.contrast_label,int(rr.block_length),float(rr.observed_difference),float(rr.bootstrap_median),float(rr.diagnostic_q025),float(rr.diagnostic_q975),float(rr.frequency_with_observed_sign),'Difference in Spearman rho',scope_note+' Paired contrasts use the two cells from the same bootstrap draw.'])
+    s6df=pd.DataFrame(s6,columns=['panel','object_id','object_label','block_length','observed_value','bootstrap_median','diagnostic_q025','diagnostic_q975','frequency_with_observed_sign','metric','interpretation'])
+    if len(s6df)!=30 or (s6df.panel=='A_cellwise').sum()!=12 or (s6df.panel=='B_paired_contrasts').sum()!=18:
+        raise RuntimeError('Table S6 row-count/panel mismatch')
+    s6df.to_csv(supp/'table_s6_temporal_bootstrap_diagnostics.csv',index=False)
 
-    # S7: conservative country provenance with exact source locator plus disseminated i-status counts.
-    s7=rmc_registry.merge(rmc_status[['geo','years_n','flag_i_n','blank_n','other_flag_n']],on='geo',how='left',validate='one_to_one')
-    s7.to_csv(supp/'table_s7_rmc_status_provenance.csv',index=False)
+    # S7: production/residence accounting bridge, wide architecture retained.
+    s7=_read(analysis,'supplementary/accounting_bridge.csv')
+    if len(s7)!=9: raise RuntimeError(f'Table S7 row-count mismatch: {len(s7)} != 9')
+    s7.to_csv(supp/'table_s7_production_account_bridge.csv',index=False)
 
-    # S8: concise source-status and scale/tie summaries; detailed intervals/bootstrap stay in supplementary_data.
+    # S8: RMC provenance registry (27), common n=20 material rows (3), and three-group material rows (9).
     s8=[]
-    for _,rr in source_status.iterrows(): s8.append(['source_status',rr.source,rr.status_code,float(rr['count']),rr.official_status_label])
+    s8_cols=['panel','record_type','geo','provenance_group','material_measure','territorial_ghg','consumption_ghg','full_grid_range','n_countries','countries','disseminated_source_regime','documented_estimation_method','documented_coverage','official_evidence_source','official_evidence_locator','confidence','interpretation']
+    for _,rr in rmc_registry.iterrows():
+        s8.append(['A_country_registry','country_registry',rr.geo,'','',np.nan,np.nan,np.nan,1,rr.geo,rr.disseminated_source_regime,rr.documented_estimation_method,rr.documented_coverage,rr.official_evidence_source,rr.official_evidence_locator,rr.confidence,'Country-level registry entry; exact year-level production route is not inferred beyond official documentation.'])
+    n20=rmc_n20.iloc[0]
+    for mat,tkey,ckey in [('CMUR','a_CMUR_TERR','d_CMUR_CFOOT'),('DMC','b_DMC_TERR','e_DMC_CFOOT'),('RMC','c_RMC_TERR','f_RMC_CFOOT')]:
+        s8.append(['B_rmc_provenance_sensitivity','n20_sensitivity','','',mat,float(n20[tkey]),float(n20[ckey]),float(n20.full_grid_range),int(n20.n_countries),n20.included_countries,'','','','','','',n20.composition_caveat])
+    for _,rr in rmc_groups.iterrows():
+        for mat,tkey,ckey in [('CMUR','a_CMUR_TERR','d_CMUR_CFOOT'),('DMC','b_DMC_TERR','e_DMC_CFOOT'),('RMC','c_RMC_TERR','f_RMC_CFOOT')]:
+            s8.append(['C_registry_groups','provenance_group_grid','',rr.provenance_group,mat,float(rr[tkey]),float(rr[ckey]),float(rr.full_grid_range),int(rr.n_countries),rr.countries,rr.registry_regime,'','','','','',rr.composition_caveat])
+    s8df=pd.DataFrame(s8,columns=s8_cols)
+    if len(s8df)!=39 or (s8df.panel=='A_country_registry').sum()!=27 or (s8df.panel=='B_rmc_provenance_sensitivity').sum()!=3 or (s8df.panel=='C_registry_groups').sum()!=9:
+        raise RuntimeError('Table S8 row-count/panel mismatch')
+    s8df.to_csv(supp/'table_s8_rmc_provenance.csv',index=False)
+
+    # S9: source status, denominator sensitivity, direct tie rows, two selected scale diagnostics, and population any-flag diagnostic.
+    s9=[]
+    s9_cols=['panel','object_id','object_label','group_or_context','n_countries','metric','value','auxiliary_value_1','auxiliary_value_2','countries','note']
+    for _,rr in source_status.iterrows():
+        s9.append(['A_source_status',f"{rr.source}|{rr.status_code}",rr.source,rr.status_code,np.nan,'Country-year observations',float(rr['count']),'','',rr.countries_affected,rr.official_status_label])
     pcs=_read(analysis,'supplementary/published_vs_common_rank_summary.csv')
-    for _,rr in pcs.iterrows(): s8.append(['published_vs_common',f"{rr.period}|{rr.representation}",'spearman_progress_common_vs_published',float(rr.spearman_progress_common_vs_published),''])
+    for _,rr in pcs.iterrows():
+        s9.append(['B_published_vs_common',f"{rr.period}|{rr.representation}",rr.representation,rr.period,27,'Spearman rho',float(rr.spearman_progress_common_vs_published),float(rr.mean_abs_rank_displacement),float(rr.max_abs_rank_displacement),'','Auxiliary values are mean and maximum absolute rank displacement.'])
     ties=_read(analysis,'supplementary/tie_audit.csv')
-    tie_groups=(ties.groupby(['period','spec','estimator','cmur_mode','variable'],dropna=False).size().reset_index(name='n_tie_groups'))
-    for _,rr in tie_groups.iterrows():
-        s8.append(['tie_audit',f"{rr.period}|{rr.spec}|{rr.estimator}|{rr.cmur_mode}|{rr.variable}",'n_tie_groups',float(rr.n_tie_groups),'12-decimal numerical canonicalization'])
-    pd.DataFrame(s8,columns=['diagnostic_group','context','metric','value','note']).to_csv(supp/'table_s8_numeric_scale_diagnostics.csv',index=False)
+    for i,rr in ties.reset_index(drop=True).iterrows():
+        ctx=f"{rr.period}|{rr.spec}|{rr.estimator}|{rr.cmur_mode}|{rr.variable}"
+        s9.append(['C_tie_groups',f'tie_{i+1:02d}',rr.variable,ctx,int(rr.n_tied),'Canonical tied value',float(rr.canonical_value_12dp),float(rr.raw_span),'',rr.geos,'12-decimal numerical canonicalization prevents implementation-dependent rank splitting of machine-scale numerical ties.'])
+    for key,label in [('common_even_year','Common even-year sensitivity'),('total_scale','Total-scale sensitivity')]:
+        q=full_grid_fixed[full_grid_fixed.diagnostic_key.eq(key)]
+        if len(q)!=1: raise RuntimeError(f'Missing S9 selected scale diagnostic {key}')
+        rr=q.iloc[0]
+        s9.append(['D_selected_scale',key,label,'selected endpoint (secondary)',27,'Difference in Spearman rho',float(rr.selected_endpoint_cell_difference),'','', '', 'Selected endpoint is secondary descriptive evidence; full-grid evidence is reported separately.'])
+    for _,rr in population_flag_summary.iterrows():
+        s9.append(['E_population_any_flag',f"{rr.comparison_key}|{rr.flag_group}",rr.comparison_label,rr.flag_group,int(rr.n_countries),'Mean absolute rank displacement',float(rr.mean_abs_rank_displacement),'','',rr.countries,rr.interpretation])
+    s9df=pd.DataFrame(s9,columns=s9_cols)
+    if len(s9df)!=46 or (s9df.panel=='A_source_status').sum()!=14 or (s9df.panel=='B_published_vs_common').sum()!=12 or (s9df.panel=='C_tie_groups').sum()!=12 or (s9df.panel=='D_selected_scale').sum()!=2 or (s9df.panel=='E_population_any_flag').sum()!=6:
+        raise RuntimeError('Table S9 row-count/panel mismatch')
+    s9df.to_csv(supp/'table_s9_source_denominator_tie_scale_diagnostics.csv',index=False)
 
     # Figure 1: symmetric Full 3×2 grid; values unchanged.
     r=main[main.period=='FULL_2010_2023'].iloc[0]; f1=[]
@@ -548,7 +634,7 @@ def render_all(output_root: Path, geoms: dict):
         q=d[d.panel==panel].copy(); rho=float(q.spearman_rho.iloc[0]); ax.plot([1,27],[1,27],color='#BDBDBD',lw=.6,zorder=1); ax.scatter(q.material_rank,q.climate_rank,s=7,color='#4F5B66',zorder=2)
         ax.set_xlim(.1,27.9); ax.set_ylim(.1,27.9); ax.set_xticks([1,7,14,21,27]); ax.set_yticks([1,7,14,21,27]); ax.grid(color='#F1F1F1',lw=.35); ax.set_title(f'{q.panel_label.iloc[0]}\nρ = {rho:.3f}',fontsize=6.2,pad=4); ax.text(-.08,1.04,letters[idx],transform=ax.transAxes,fontsize=7,fontweight='bold',ha='left',va='bottom',clip_on=False)
         qa['figure2_labels'] += _place_rank_labels(fig,ax,q,4.0)
-    fig.supxlabel('Material progress rank',fontsize=7); fig.supylabel('Climate progress rank',fontsize=7); fig.subplots_adjust(left=.065,right=.995,bottom=.08,top=.96,wspace=.14,hspace=.34); _save(fig,output_root,'figure_2_rank_concordance_geometry')
+    fig.supxlabel('Material progress rank (1 = most favorable)',fontsize=7); fig.supylabel('Climate progress rank (1 = most favorable)',fontsize=7); fig.subplots_adjust(left=.065,right=.995,bottom=.08,top=.96,wspace=.14,hspace=.34); _save(fig,output_root,'figure_2_rank_concordance_geometry')
 
     # Figure 3 — selected country-consequence cell values with non-overlapping corner sign-disagreement glyphs.
     d=pd.read_csv(sd/'figure_3_country_representation_consequences.csv').sort_values('geo'); cols=['rank_shift_CMUR_to_DMC','rank_shift_DMC_to_RMC','rank_shift_TERR_to_CFOOT']; xlabels=['CMUR → DMC','DMC → RMC','Territorial →\nconsumption-based GHG']; flips=['point_sign_disagreement_CMUR_DMC','point_sign_disagreement_DMC_RMC','point_sign_disagreement_TERR_CFOOT']
@@ -698,7 +784,7 @@ def main():
     ap.add_argument("--natural-earth",type=Path,default=ROOT/"cartography"/"source"/"ne_10m_admin_0_countries.zip")
     args=ap.parse_args()
     build_all(args.analysis,args.output_root,args.natural_earth)
-    print("PUBLICATION_LAYER_BUILD_PASS figures=13 main_tables=4 supplementary_tables=8 map_join=27/27")
+    print("PUBLICATION_LAYER_BUILD_PASS figures=13 main_tables=4 supplementary_tables=9 map_join=27/27")
 
 if __name__=="__main__":
     main()

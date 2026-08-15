@@ -24,7 +24,7 @@ The validated computational reference files are under `results/reference/`. The 
 ## Publication layer
 
 - MAIN Tables 2–5: `results/reference/tables/`
-- Supplement Tables S1–S8: `supplementary_tables/`
+- Supplement Tables S1–S9: `supplementary_tables/`
 - Detailed machine-readable Supplement/Data evidence: `results/reference/supplementary_data/`
 - Figure source data: `figures/source_data/`
 - Vector publication artwork: `figures/reference/*.pdf`
@@ -36,6 +36,8 @@ The exact object mapping is in `PUBLICATION_OUTPUT_MAP.csv`.
 ## Bootstrap execution
 
 The joint circular moving-block residual bootstrap uses two block lengths (2 and 3), 10,000 realizations for each, fixed seeds and common whole-year residual-vector resampling across all country/series combinations. Its detailed outputs remain secondary diagnostics in Supplement/Data source evidence. MAIN Table 5 uses only the compact full-grid-range bootstrap summaries for block lengths 2 and 3. The configuration is recorded in `results/reference/supplementary_data/bootstrap_config.json`.
+
+Paired temporal-bootstrap contrasts are computed within each draw from the corresponding two grid cells and are stored in `results/reference/supplementary_data/bootstrap_paired_contrast_summary.csv`. The descriptive population-denominator any-flag diagnostic is stored in `results/reference/supplementary_data/population_flag_rank_displacement_summary.csv`; it contains no p-values or causal interpretation.
 
 ## Determinism and tolerance
 
