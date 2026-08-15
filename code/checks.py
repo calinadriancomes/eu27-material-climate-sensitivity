@@ -126,10 +126,29 @@ def safe_extract(zip_path, destination):
             if target!=base and base not in target.parents: raise RuntimeError("Unsafe path in ZIP")
         z.extractall(destination)
 
+NONCOMPUTATIONAL_REPOSITORY_PATHS = {".gitignore", "LICENSE"}
+NONCOMPUTATIONAL_REPOSITORY_SUFFIXES = {".md", ".cff"}
+
+def repository_checksum_files(root):
+    root=Path(root)
+    files=[]
+    for p in root.rglob("*"):
+        if not p.is_file():
+            continue
+        rel=p.relative_to(root)
+        if p.name=="checksums.sha256":
+            continue
+        if "__pycache__" in rel.parts or ".pytest_cache" in rel.parts or p.suffix==".pyc" or "work" in rel.parts:
+            continue
+        if rel.as_posix() in NONCOMPUTATIONAL_REPOSITORY_PATHS or p.suffix.lower() in NONCOMPUTATIONAL_REPOSITORY_SUFFIXES:
+            continue
+        files.append(p)
+    return sorted(files)
+
 def write_checksums(root):
     root=Path(root); out=root/"checksums.sha256"
     if out.exists(): out.unlink()
-    files=sorted(p for p in root.rglob("*") if p.is_file() and p.name!="checksums.sha256" and "__pycache__" not in p.relative_to(root).parts and ".pytest_cache" not in p.relative_to(root).parts and p.suffix!=".pyc" and "work" not in p.relative_to(root).parts)
+    files=repository_checksum_files(root)
     out.write_text("".join(f"{sha256_file(p)}  {p.relative_to(root).as_posix()}\n" for p in files),encoding="utf-8")
 
 def deterministic_zip(source_root, output_zip):
